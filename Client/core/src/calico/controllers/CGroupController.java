@@ -68,6 +68,7 @@ import calico.components.composable.ComposableElementController;
 import calico.components.decorators.CGroupDecorator;
 import calico.components.piemenu.PieMenu;
 import calico.components.piemenu.PieMenuButton;
+import calico.components.tags.TagsMenu;
 import calico.inputhandlers.CalicoInputManager;
 import calico.networking.Networking;
 import calico.networking.PacketHandler;
@@ -2002,6 +2003,10 @@ public class CGroupController
 			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
 			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
 		}
+	}
+	
+	public static void show_tags(long uuid) {
+		TagsMenu.show_tags(uuid);
 	}
 
 

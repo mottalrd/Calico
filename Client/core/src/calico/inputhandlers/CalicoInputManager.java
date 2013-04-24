@@ -37,6 +37,7 @@ import calico.components.*;
 import calico.components.bubblemenu.BubbleMenu;
 import calico.components.menus.CanvasMenuButton;
 import calico.components.piemenu.PieMenu;
+import calico.components.tags.TagsMenu;
 import calico.controllers.*;
 import calico.events.CalicoEventHandler;
 import calico.iconsets.CalicoIconManager;
@@ -562,6 +563,7 @@ public class CalicoInputManager
 							)
 					{
 						BubbleMenu.clearMenu();
+						TagsMenu.clearMenu();
 						CCanvasStrokeModeInputHandler.deleteSmudge = true;
 					}
 					else if (CalicoPerspective.Active.getEventTarget(ev) != BubbleMenu.activeUUID
@@ -569,6 +571,7 @@ public class CalicoInputManager
 							/*|| !CGroupController.groupdb.get(BubbleMenu.activeUUID).isPermanent()*/)
 					{
 						BubbleMenu.clearMenu();
+						TagsMenu.clearMenu();
 						CCanvasStrokeModeInputHandler.deleteSmudge = true;
 						
 					}
