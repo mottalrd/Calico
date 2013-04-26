@@ -29,6 +29,6 @@
 	<classpathentry kind="lib" path="lib/smackx-jingle.jar"/>
 	<classpathentry kind="lib" path="lib/smackx.jar"/>
 	<classpathentry kind="lib" path="lib/velocity-1.6.2-dep.jar"/>
-	<classpathentry kind="lib" path="lib/calico3server.jar" sourcepath="/calico3server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CalicoServer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -66,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
@@ -92,6 +93,7 @@ import calico.components.bubblemenu.BubbleMenu;
 import calico.components.decorators.CGroupDecorator;
 import calico.components.piemenu.PieMenu;
 import calico.components.piemenu.PieMenuButton;
+import calico.components.tags.Tag;
 import calico.controllers.CArrowController;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
@@ -179,6 +181,16 @@ public class CGroup extends PPath implements Serializable {
 
 	// This will hold the pie menu buttons (Class<?>)
 	private static ObjectArrayList<Class<?>> pieMenuButtons = new ObjectArrayList<Class<?>>(); 
+	private ObjectArrayList<Tag> tags=new ObjectArrayList<Tag>();
+	
+	/** 
+	 * Get the list of tags applied to this CGroup
+	 * @return 
+	 */
+	public List<Tag> getTags(){
+		return tags;
+	}
+	
 	public static void registerPieMenuButton(Class<?> button)
 	{
 		if(!pieMenuButtons.contains(button))
@@ -205,6 +217,8 @@ public class CGroup extends PPath implements Serializable {
 		CalicoDraw.setNodeTransparency(this, 0f);
 		
 //		setPieMenuButtons();
+		//TODO[mottalrd] leave me out
+		this.tags.add(new Tag());
 	}
 	
 

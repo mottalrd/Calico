@@ -347,6 +347,7 @@ public class CGroupController
 		if (BubbleMenu.isBubbleMenuActive() && BubbleMenu.activeUUID == uuid)
 		{
 			BubbleMenu.moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
+			TagsMenu.moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
 		}
 	}
 	
