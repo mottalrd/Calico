@@ -34,6 +34,7 @@ import calico.admin.*;
 import calico.clients.*;
 import calico.components.decorators.CGroupDecorator;
 import calico.components.decorators.CListDecorator;
+import calico.components.tags.Tag;
 import calico.controllers.CArrowController;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
@@ -44,6 +45,7 @@ import calico.utils.Geometry;
 import calico.uuid.*;
 
 import java.util.*;
+import java.util.List;
 import java.io.*;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -114,6 +116,21 @@ public class CGroup {
 	
 	private static BasicStroke groupStroke = new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
+	private ObjectArrayList<Tag> tags=new ObjectArrayList<Tag>();
+	
+	public List<Tag> getTags(){
+		return tags;
+	}
+	       
+	/**
+	* Adds a tag to this CGroup
+	* @param newInstance
+	*/
+	public void addTag(Tag newInstance) {
+		this.tags.add(newInstance);
+	}
+
+	
 	public CGroup(long uuid, long cuid, long puid, boolean isPerm) {
 		this.uuid = uuid;
 		this.cuid = cuid;
@@ -805,6 +822,10 @@ public class CGroup {
 					+ ByteUtils.SIZE_OF_SHORT
 					+ (2 * this.points.npoints * ByteUtils.SIZE_OF_SHORT)
 					+ CalicoPacket.getSizeOfString(this.text);
+			for(Tag tag: this.getTags()){
+				packetSize+=CalicoPacket.getSizeOfString(tag.getClass().getName());
+			}
+			
 
 			CalicoPacket packet = new CalicoPacket(packetSize);
 			// UUID CUID PUID <COLOR> <NUMCOORDS> x1 y1
@@ -823,6 +844,9 @@ public class CGroup {
 			packet.putDouble(this.scaleX);
 			packet.putDouble(this.scaleY);
 			packet.putString(this.text);
+			for(Tag tag: this.getTags()){
+				packet.putString(tag.getClass().getName());
+			}
 
 			return new CalicoPacket[] {packet};
 			

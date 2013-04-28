@@ -2038,6 +2038,9 @@ public class CGroup extends PPath implements Serializable {
 				+ ByteUtils.SIZE_OF_SHORT
 				+ (2 * this.points.npoints * ByteUtils.SIZE_OF_SHORT)
 				+ CalicoPacket.getSizeOfString(this.text);
+		for(Tag tag: this.getTags()){
+			packetSize+=CalicoPacket.getSizeOfString(tag.getClass().getName());
+		}
 
 		CalicoPacket packet = new CalicoPacket(packetSize);
 		// UUID CUID PUID <COLOR> <NUMCOORDS> x1 y1
@@ -2056,6 +2059,9 @@ public class CGroup extends PPath implements Serializable {
 		packet.putDouble(this.scaleX);
 		packet.putDouble(this.scaleY);
 		packet.putString(this.text);
+		for(Tag tag: this.getTags()){
+			packet.putString(tag.getClass().getName());
+		}
 
 		return new CalicoPacket[] {packet};
 	}

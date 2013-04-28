@@ -43,6 +43,7 @@ import calico.components.composable.ComposableElement;
 import calico.components.composable.ComposableElementController;
 import calico.components.grid.*;
 import calico.components.menus.buttons.UndoButton;
+import calico.components.tags.Tag;
 import calico.controllers.*;
 import calico.events.CalicoEventHandler;
 import calico.inputhandlers.*;
@@ -693,11 +694,32 @@ public class PacketHandler
 		double scaleY = p.getDouble();
 		String text = p.getString();
 		
+		HashSet<String> tags=new HashSet<String>();
+		try{
+			String tag="";
+			do{
+				tag=p.getString();
+				if(!tag.equals(""))tags.add(tag);
+			}while(true);
+		}catch(Exception e){
+			//nothing to do
+			//TODO[mottalrd] Absolutely bad
+		}
 		
 //		CGroupController.groupdb.get(uuid).finish();
 		CGroupController.groupdb.get(uuid).primative_rotate(rotation);
 		CGroupController.groupdb.get(uuid).primative_scale(scaleX, scaleY);
 		CGroupController.groupdb.get(uuid).setText(text);
+		for(String t: tags)
+			try {
+				CGroupController.groupdb.get(uuid).addTag((Tag)Class.forName(t).newInstance());
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		
 		CGroupController.no_notify_finish(uuid, captureChildren, false, false);
 		
