@@ -1,17 +1,5 @@
 package calico.plugins.analysis.controllers;
 
-import java.text.DecimalFormat;
-import java.util.Iterator;
-
-import org.eclipse.uml2.uml.Comment;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.OpaqueAction;
-
-import calico.CalicoDraw;
-import calico.components.CGroup;
-import calico.controllers.CGroupController;
-import calico.plugins.analysis.transformation.calico2uml.Calico2UML;
-import calico.plugins.analysis.transformation.uml2prism.uml.ModelDecorator;
 
 /**
  * The Analysis Menu Controller is in managing the analysis actions

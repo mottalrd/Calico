@@ -17,7 +17,6 @@ import calico.plugins.analysis.components.buttons.NETTagButton;
 import calico.plugins.analysis.components.buttons.RAMTagButton;
 import calico.plugins.analysis.controllers.ADMenuController;
 
-
 /*
  * The entry point to load the plugin and the main logic is here
  * Contains all the static references to the graphical objects

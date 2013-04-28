@@ -5,16 +5,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import calico.CalicoOptions;
-import calico.iconsets.CalicoIconManager;
 import edu.umd.cs.piccolo.nodes.PImage;
 
-/** TODO[mottalrd] The Tag must be an interface 
- * since we have different types of actual tags
- */
-public class Tag {
+public abstract class Tag {
 
 	/** The image representing the tag **/
-	private Image iconImage = CalicoIconManager.getIconImage("tags.speedtag");
+	protected Image iconImage;
 	
 	/** The position where this image must be displayed **/
 	private Point tagPosition = new Point(0,0);
