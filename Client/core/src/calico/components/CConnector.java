@@ -28,30 +28,23 @@
 package calico.components;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectSortedSet;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
 import calico.Calico;
 import calico.CalicoDraw;
 import calico.CalicoOptions;
+import calico.Geometry;
 import calico.components.composable.Composable;
 import calico.components.composable.ComposableElement;
 import calico.components.composable.ComposableElementController;
@@ -60,16 +53,13 @@ import calico.components.composable.connectors.HighlightElement;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
 import calico.controllers.CGroupController;
-import calico.controllers.CStrokeController;
 import calico.networking.netstuff.ByteUtils;
 import calico.networking.netstuff.CalicoPacket;
 import calico.networking.netstuff.NetworkCommand;
-import calico.Geometry;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.nodes.PPath;
 import edu.umd.cs.piccolo.util.PAffineTransform;
 import edu.umd.cs.piccolo.util.PBounds;
-import edu.umd.cs.piccolo.util.PPaintContext;
 import edu.umd.cs.piccolox.nodes.PComposite;
 
 public class CConnector extends PComposite implements Composable{
@@ -753,4 +743,20 @@ public class CConnector extends PComposite implements Composable{
 	{
 		return Composable.TYPE_CONNECTOR;
 	}
+	
+	/**
+	 * Returns the incoming group
+	 * @return
+	 */
+	public CGroup getIncomingGroup(){
+		return CGroupController.groupdb.get(this.getAnchorUUID(TYPE_TAIL));
+	}
+	
+	/**
+	 * Returns the outgoing group
+	 * @return
+	 */
+	public CGroup getOutgoingGroup(){
+		return CGroupController.groupdb.get(this.getAnchorUUID(TYPE_HEAD));
+	}	
 }

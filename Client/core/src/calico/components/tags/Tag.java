@@ -8,6 +8,9 @@ import calico.CalicoOptions;
 import calico.iconsets.CalicoIconManager;
 import edu.umd.cs.piccolo.nodes.PImage;
 
+/** TODO[mottalrd] The Tag must be an interface 
+ * since we have different types of actual tags
+ */
 public class Tag {
 
 	/** The image representing the tag **/

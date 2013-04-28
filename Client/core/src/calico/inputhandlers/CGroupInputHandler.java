@@ -57,7 +57,7 @@ import edu.umd.cs.piccolox.nodes.PLine;
 
 public class CGroupInputHandler extends CalicoAbstractInputHandler
 {	
-	private long uuid = 0L;
+	protected long uuid = 0L;
 	
 	
 	private CGroupExpertModeInputHandler modehandler_expert = null;

@@ -31,6 +31,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -419,5 +420,66 @@ public class CConnectorController {
 			return "";
 		
 		return connectors.get(uuid).get_signature_debug_output();
-	}		
+	}	
+	
+    public static void snapConnectorToEdge(long connectorUUID, long groupUUID)
+    {
+            if (!connectors.containsKey(connectorUUID))
+                    return;
+            CConnector con = connectors.get(connectorUUID);
+            
+            if (!(con.getAnchorUUID(CConnector.TYPE_HEAD) == groupUUID || con.getAnchorUUID(CConnector.TYPE_TAIL) == groupUUID))
+                    return;
+            
+            //where should it be?
+            Point p=null;
+            if (con.getAnchorUUID(CConnector.TYPE_HEAD) == groupUUID) p = con.getAnchorPoint(CConnector.TYPE_HEAD);
+            else if (con.getAnchorUUID(CConnector.TYPE_TAIL) == groupUUID) p = con.getAnchorPoint(CConnector.TYPE_TAIL);
+			else
+				try {
+					throw new Exception();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+            
+            Point pDest = CConnectorController.getSnapEdge(groupUUID, p);
+            con.moveAnchor(groupUUID, pDest.x - p.x, pDest.y - p.y);
+    }
+    
+    private static Point getSnapEdge(long gUUID, Point p)
+    {
+            if (!CGroupController.exists(gUUID))
+                    return new Point(0,0);
+
+            Point mostLeft, mostTop, mostRight, mostBottom;
+            Polygon poly = calico.utils.Geometry.getPolyFromPath(CGroupController.groupdb.get(gUUID).getPathReference().getPathIterator(null));
+
+            Rectangle rect = poly.getBounds();
+            mostLeft = new Point(rect.x, (new Double(rect.getCenterY()).intValue()));
+            mostRight = new Point(rect.x + rect.width, (new Double(rect.getCenterY()).intValue()));
+            mostTop = new Point((new Double(rect.getCenterX()).intValue()), rect.y);
+            mostBottom = new Point((new Double(rect.getCenterX()).intValue()), rect.y + rect.height);
+
+            double mostLeftD = calico.Geometry.length(p.x, p.y, mostLeft.x, mostLeft.y);
+            double mostRightD = calico.Geometry.length(p.x, p.y, mostRight.x, mostRight.y);
+            double mostTopD = calico.Geometry.length(p.x, p.y, mostTop.x, mostTop.y);
+            double mostBottomD = calico.Geometry.length(p.x, p.y, mostBottom.x, mostBottom.y);
+
+            double min = Math.min(mostLeftD, mostRightD);
+            min = Math.min(min, mostRightD);
+            min = Math.min(min, mostTopD);
+            min = Math.min(min, mostBottomD);
+
+            if (min == mostLeftD)
+                    return mostLeft;
+            else if (min == mostRightD)
+                    return mostRight;
+            else if (min == mostTopD)
+                    return mostTop;
+            else //mostBottomD:
+                    return mostBottom;
+
+    }
+    
+
 }

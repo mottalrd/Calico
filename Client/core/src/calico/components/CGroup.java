@@ -34,7 +34,6 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -42,21 +41,15 @@ import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.RadialGradientPaint;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.Transparency;
-import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
-import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -64,12 +57,10 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.http.HttpEntity;
@@ -89,10 +80,7 @@ import calico.CalicoOptions;
 import calico.CalicoUtils;
 import calico.components.arrow.AnchorPoint;
 import calico.components.arrow.CArrow;
-import calico.components.bubblemenu.BubbleMenu;
 import calico.components.decorators.CGroupDecorator;
-import calico.components.piemenu.PieMenu;
-import calico.components.piemenu.PieMenuButton;
 import calico.components.tags.Tag;
 import calico.controllers.CArrowController;
 import calico.controllers.CCanvasController;
@@ -105,7 +93,6 @@ import calico.networking.netstuff.ByteUtils;
 import calico.networking.netstuff.CalicoPacket;
 import calico.networking.netstuff.NetworkCommand;
 import calico.utils.Geometry;
-import calico.utils.RoundPolygon;
 import edu.umd.cs.piccolo.PNode;
 import edu.umd.cs.piccolo.activities.PActivity;
 import edu.umd.cs.piccolo.nodes.PPath;
@@ -191,6 +178,14 @@ public class CGroup extends PPath implements Serializable {
 		return tags;
 	}
 	
+	/**
+	 * Adds a tag to this CGroup
+	 * @param newInstance
+	 */
+	public void addTag(Tag newInstance) {
+		this.tags.add(newInstance);
+	}
+	
 	public static void registerPieMenuButton(Class<?> button)
 	{
 		if(!pieMenuButtons.contains(button))
@@ -217,8 +212,6 @@ public class CGroup extends PPath implements Serializable {
 		CalicoDraw.setNodeTransparency(this, 0f);
 		
 //		setPieMenuButtons();
-		//TODO[mottalrd] leave me out
-		this.tags.add(new Tag());
 	}
 	
 
@@ -2551,6 +2544,30 @@ public class CGroup extends PPath implements Serializable {
 	{
 //		System.out.println("~~~~~~~~~~~~~~~ SETTING TRANSPARENCY TO: " + t +", wasL " + getTransparency());
 		super.setTransparency(t);
+	}
+	
+	public HashSet<CConnector> getIncomingPaths(){
+		HashSet<CConnector> incomingpaths=new HashSet<CConnector>();
+		
+		for(long cuuid: this.childConnectors){
+			//if I am the head of this connector
+			if(CConnectorController.connectors.get(cuuid).getAnchorUUID(CConnector.TYPE_HEAD)==this.uuid){
+				incomingpaths.add(CConnectorController.connectors.get(cuuid));
+			}
+		}
+		return incomingpaths;				
+	}
+	
+	public HashSet<CConnector> getOutgoingPaths(){
+		HashSet<CConnector> outgoingpaths=new HashSet<CConnector>();
+		
+		for(long cuuid: this.childConnectors){
+			//if I am the head of this connector
+			if(CConnectorController.connectors.get(cuuid).getAnchorUUID(CConnector.TYPE_TAIL)==this.uuid){
+				outgoingpaths.add(CConnectorController.connectors.get(cuuid));
+			}
+		}
+		return outgoingpaths;				
 	}
 
 }
