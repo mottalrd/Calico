@@ -111,21 +111,11 @@ public class AnalysisPlugin extends AbstractCalicoPlugin implements CalicoEventL
 		long guuid=p.getLong();
 		String type_name=p.getString();
 		
-		ADMenuController.add_tag(guuid, type_name);	
+		ADMenuController.add_tag(guuid, type_name);
 		
 		if (c != null) {
 			ClientManager.send_except(c, p);
 		}
 	}
-
-
-
-
-
-
-
-
-
-
 
 }
