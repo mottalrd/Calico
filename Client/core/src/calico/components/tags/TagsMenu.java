@@ -1,7 +1,5 @@
 package calico.components.tags;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
@@ -14,96 +12,87 @@ import calico.controllers.CGroupController;
 import edu.umd.cs.piccolo.util.PBounds;
 
 public class TagsMenu {
-
-	/** The list of tags to be shown **/
-	private static ObjectArrayList<Tag> tagsList = new ObjectArrayList<Tag>();
 	
 	/** The container displaying the tags **/
-	private static TagsMenuContainer tagsContainer = null;
+	private TagsMenuContainer tagsContainer = null;
 	
-	/** The UUID of the element owning the tags which are currently displayed **/
-	private static long activeUUID = 0l;
+	/** The group id this menu belongs to **/
+	private long guuid;
 	
-	/** The current bounds of the menu **/
-	/** TODO[mottalrd] not sure this should be here since the displaying element is the TagsMenuContainer **/
-	private static PBounds bounds;
+	public TagsMenu(long guuid){
+		this.guuid=guuid;
+		tagsContainer = new TagsMenuContainer(this);
+	}
 	
-	/** True if the bubble menu is currently displayed , false otherwise **/
-	private static boolean isTagsMenuActive = false;
+	public void update() {
+		CGroup group=CGroupController.groupdb.get(guuid);
+		setIconPositions(new Point((int)group.getX(), (int)group.getY()));
+		update_container();
+	}
 	
 	/**
-	 * Shows the tags menu for the provided uuid
-	 * @param uuid
+	 * Move the tags
+	 * @param bounds2
 	 */
-	public static void show_tags(long uuid) {
-		if (isTagsMenuActive())
+	public void moveIconPositions(PBounds bounds2) {
+		for(int i=0;i<CGroupController.groupdb.get(guuid).getTags().size();i++)
 		{
-			// Clear out the old one, then try this again
-			clearMenu();
+			Point pos=new Point((int)bounds2.getX(), (int)bounds2.getY());
+			CGroupController.groupdb.get(guuid).getTags().get(i).setPosition(pos);
+			CalicoDraw.setNodeBounds(tagsContainer.getChild(i), pos.getX(), pos.getY(), CalicoOptions.menu.icon_size, CalicoOptions.menu.icon_size);
 		}
-		
-		//from now on the active uuid is this one
-		activeUUID=uuid;
-		CGroup group=CGroupController.groupdb.get(activeUUID);
-		
-		//Get the bounds of the uuid such that 
-		//the menu is shown in the correct place
-		//Here we are assuming that only groups have tags
-		bounds=group.getBounds();
-		tagsList=(ObjectArrayList<Tag>) group.getTags();
-		
-		//Set icon positions from the bounds of the element
-		//where we are showing the tags menu
-		setIconPositions(new Point((int)group.getX(), (int)group.getY()));
-		
-		//Shows the container of the icons
-		show_tags_container();
-		
-		isTagsMenuActive = true;
 	}
 
 	/**
 	 * Hides the tags menu
 	 */
-	public static void clearMenu() {
+	public void clearMenu() {
 		CalicoDraw.removeAllChildrenFromNode(tagsContainer);
 		CalicoDraw.removeNodeFromParent(tagsContainer);
 		CalicoDraw.repaintNode(tagsContainer);
 	}
 	
 	/**
-	 * @return the number of tags currently in the menu
-	 */
-	public static int getTagsCount(){
-		return tagsList.size();
-	}
-	
-	/**
-	 * @param i the tag we are interested in
-	 * @return the tag at the i^th position
-	 */
-	public static Tag getTag(int i){
-		return tagsList.get(i);
-	}
-	
-	/**
 	 * Setup the position of the tags to be displayed
 	 */
-	private static void setIconPositions(Point p)
+	private void setIconPositions(Point p)
 	{
-		for(int i=0;i<tagsList.size();i++)
+		for(int i=0;i<CGroupController.groupdb.get(guuid).getTags().size();i++)
 		{
-			tagsList.get(i).setPosition(p);
+			CGroupController.groupdb.get(guuid).getTags().get(i).setPosition(p);
 		}
+	}
+	
+	/**
+	 * Get the tags 
+	 * @return
+	 */
+	public int getTagsCount() {
+		return CGroupController.groupdb.get(guuid).getTags().size();
+	}
+
+	/**
+	 * Get the tag at position i
+	 * @param i
+	 * @return
+	 */
+	public Tag getTag(int i) {
+		return CGroupController.groupdb.get(guuid).getTags().get(i);
 	}
 	
 	/**
 	 * Shows the container of the tags
 	 */
-	private static void show_tags_container() {
-		//Initialize container
-		tagsContainer = new TagsMenuContainer();
-		tagsContainer.addTagsToBeDisplayed();
+	private void update_container() {
+		//TODO[mottalrd][improvement] Each time I move I recreate the container for the images, not really good
+		//TODO[mottalrd][bug] When I restart the client the canvas goes out of sync and reloads the scraps (on console I see [!=== FOUND MISMATCH ===!])
+		tagsContainer=new TagsMenuContainer(this);
+		
+		//Add the tags' images to the container
+		for(Tag tag: CGroupController.groupdb.get(guuid).getTags())
+		{
+			tagsContainer.addChild( tag.getPImage() );
+		}
 		
 		//Update the bounds of the menu
 		updateContainerBounds();
@@ -119,12 +108,12 @@ public class TagsMenu {
 	/**
 	 * Updates the bounds of the menu
 	 */
-	private static void updateContainerBounds()
+	private void updateContainerBounds()
 	{
 		double lowX = java.lang.Double.MAX_VALUE, lowY = java.lang.Double.MAX_VALUE, highX = java.lang.Double.MIN_VALUE, highY = java.lang.Double.MIN_VALUE;
 		
 		Rectangle bounds;
-		for (Tag button : tagsList)
+		for (Tag button : CGroupController.groupdb.get(guuid).getTags())
 		{
 			bounds = button.getBounds();
 			if (lowX > bounds.x)
@@ -141,18 +130,11 @@ public class TagsMenu {
 		//bubbleContainer.setBounds(new Rectangle2D.Double(lowX, lowY, highX - lowX, highY - lowY));
 		CalicoDraw.setNodeBounds(tagsContainer, new Rectangle2D.Double(lowX, lowY, highX - lowX, highY - lowY));
 	}
-	
-	private static boolean isTagsMenuActive(){
-		return isTagsMenuActive;
-	}
 
-	public static void moveIconPositions(PBounds bounds2) {
-		for(int i=0;i<tagsList.size();i++)
-		{
-			Point pos=new Point((int)bounds2.getX(), (int)bounds2.getY());
-			tagsList.get(i).setPosition(pos);
-			CalicoDraw.setNodeBounds(tagsContainer.getChild(i), pos.getX(), pos.getY(), CalicoOptions.menu.icon_size, CalicoOptions.menu.icon_size);
-		}
-	}
+
+
+
+
+
 
 }

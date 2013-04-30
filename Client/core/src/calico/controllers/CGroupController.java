@@ -49,26 +49,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
+
 import calico.Calico;
 import calico.CalicoDataStore;
 import calico.CalicoDraw;
-import calico.CalicoOptions.arrow;
-import calico.components.arrow.AnchorPoint;
-import calico.components.arrow.CArrow;
 import calico.components.CConnector;
 import calico.components.CGroup;
 import calico.components.CGroupImage;
 import calico.components.CanvasViewScrap;
+import calico.components.arrow.AnchorPoint;
+import calico.components.arrow.CArrow;
 import calico.components.bubblemenu.BubbleMenu;
 import calico.components.composable.ComposableElement;
 import calico.components.composable.ComposableElementController;
 import calico.components.decorators.CGroupDecorator;
 import calico.components.piemenu.PieMenu;
 import calico.components.piemenu.PieMenuButton;
-import calico.components.tags.TagsMenu;
+import calico.components.tags.Tag;
 import calico.inputhandlers.CalicoInputManager;
 import calico.networking.Networking;
 import calico.networking.PacketHandler;
@@ -347,7 +345,8 @@ public class CGroupController
 		if (BubbleMenu.isBubbleMenuActive() && BubbleMenu.activeUUID == uuid)
 		{
 			BubbleMenu.moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
-			TagsMenu.moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
+			//TODO[mottalrd] big bug: if I close a client and I restart this line makes the scrap behaves in a crazy manner
+			CGroupController.groupdb.get(uuid).getTagsMenu().moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
 		}
 	}
 	
@@ -2006,8 +2005,9 @@ public class CGroupController
 		}
 	}
 	
-	public static void show_tags(long uuid) {
-		TagsMenu.show_tags(uuid);
+	public static void add_tag(Tag tag, long uuid) {
+		CGroupController.groupdb.get(uuid).addTag(tag);
+		CGroupController.groupdb.get(uuid).getTagsMenu().update();
 	}
 
 

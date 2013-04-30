@@ -563,7 +563,6 @@ public class CalicoInputManager
 							)
 					{
 						BubbleMenu.clearMenu();
-						TagsMenu.clearMenu();
 						CCanvasStrokeModeInputHandler.deleteSmudge = true;
 					}
 					else if (CalicoPerspective.Active.getEventTarget(ev) != BubbleMenu.activeUUID
@@ -571,7 +570,7 @@ public class CalicoInputManager
 							/*|| !CGroupController.groupdb.get(BubbleMenu.activeUUID).isPermanent()*/)
 					{
 						BubbleMenu.clearMenu();
-						TagsMenu.clearMenu();
+						
 						CCanvasStrokeModeInputHandler.deleteSmudge = true;
 						
 					}

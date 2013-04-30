@@ -110,8 +110,6 @@ public class CGroupScrapModeInputHandler extends CalicoAbstractInputHandler
 		}
 		pressPoint = e;
 		lastEvent = e;
-		
-		CGroupController.show_tags(uuid);
 
 //		CalicoInputManager.drawCursorImage(canvas_uid,
 //				CalicoIconManager.getIconImage("mode.scrap"), e.getPoint());

@@ -50,9 +50,8 @@ public class ADMenuController {
 		}
 		
 		//Add the tag to the scrap
-		CGroup g=CGroupController.groupdb.get(guuid);
 		try {
-			g.addTag((Tag)tag.newInstance());
+			CGroupController.add_tag((Tag)tag.newInstance(), guuid);
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

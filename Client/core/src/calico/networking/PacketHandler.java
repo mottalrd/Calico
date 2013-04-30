@@ -712,7 +712,7 @@ public class PacketHandler
 		CGroupController.groupdb.get(uuid).setText(text);
 		for(String t: tags)
 			try {
-				CGroupController.groupdb.get(uuid).addTag((Tag)Class.forName(t).newInstance());
+				CGroupController.add_tag((Tag)Class.forName(t).newInstance(), uuid);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
