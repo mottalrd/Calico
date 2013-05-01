@@ -63,10 +63,12 @@ public class ADMenuController {
 		//If the tag is already in there, remove it
 		if(!CGroupController.groupdb.get(guuid).getTags().contains(tag)){
 			//Add the tag to the scrap
-			CGroupController.add_tag(tag, guuid);
+			CGroupController.groupdb.get(guuid).addTag(tag);
+			CGroupController.groupdb.get(guuid).getTagsMenu().update();
 		}else{
 			//Remove the tag from the scrap
-			CGroupController.remove_tag(tag, guuid);
+			CGroupController.groupdb.get(guuid).removeTag(tag);
+			CGroupController.groupdb.get(guuid).getTagsMenu().update();
 		}
 		
 	}

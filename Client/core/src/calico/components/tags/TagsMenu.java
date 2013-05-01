@@ -55,23 +55,6 @@ public class TagsMenu {
 	}
 	
 	/**
-	 * Get the tags 
-	 * @return
-	 */
-	public int getTagsCount() {
-		return CGroupController.groupdb.get(guuid).getTags().size();
-	}
-
-	/**
-	 * Get the tag at position i
-	 * @param i
-	 * @return
-	 */
-	public Tag getTag(int i) {
-		return CGroupController.groupdb.get(guuid).getTags().get(i);
-	}
-	
-	/**
 	 * Shows the container of the tags
 	 */
 	private void update_container() {

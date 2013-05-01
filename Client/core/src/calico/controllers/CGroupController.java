@@ -1966,7 +1966,6 @@ public class CGroupController
 		CGroupController.recheck_parent(uuid);
 	}	
 
-	//Starts the creation of any of the activity diagram scrap
 	public static void no_notify_start(long uuid, long cuid, long puid, boolean isperm, CGroup customScrap)
 	{
 		if (!CCanvasController.exists(cuid))
@@ -2003,16 +2002,5 @@ public class CGroupController
 			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
 		}
 	}
-	
-	public static void add_tag(Tag tag, long uuid) {
-		CGroupController.groupdb.get(uuid).addTag(tag);
-		CGroupController.groupdb.get(uuid).getTagsMenu().update();
-	}
-	
-	public static void remove_tag(Tag tag, long guuid) {
-		CGroupController.groupdb.get(guuid).removeTag(tag);
-		CGroupController.groupdb.get(guuid).getTagsMenu().update();
-	}
-
 	
 }
