@@ -1,7 +1,9 @@
 package calico.components.tags;
 
+import calico.controllers.CGroupController.Listener;
 
-public abstract class Tag {
+
+public abstract class Tag implements Listener{
 
 	/** The group id this tag belongs to **/
 	protected long guuid;

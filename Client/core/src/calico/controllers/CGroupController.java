@@ -102,6 +102,10 @@ public class CGroupController
 		void groupMoved(long uuid);
 		
 		void groupDeleted(long uuid);
+		
+		void groupHasNewConnector(long uuid);
+		
+		void groupHasLostAConnector(long uuid);
 	}
 	
 	public static void setCopyUUID(long u)
@@ -128,6 +132,22 @@ public class CGroupController
 		for (Listener listener : listeners)
 		{
 			listener.groupMoved(uuid);
+		}
+	}
+	
+	private static void informListenersOfNewConnector(long uuid)
+	{
+		for (Listener listener : listeners)
+		{
+			listener.groupHasNewConnector(uuid);
+		}
+	}
+	
+	private static void informListenersOfDeletedConnector(long uuid)
+	{
+		for (Listener listener : listeners)
+		{
+			listener.groupHasLostAConnector(uuid);
 		}
 	}
 	
@@ -253,6 +273,7 @@ public class CGroupController
 		if(!exists(uuid)){return;}
 		
 		groupdb.get(uuid).addChildConnector(cuuid);
+		informListenersOfNewConnector(uuid);
 	}
 	
 
@@ -345,7 +366,8 @@ public class CGroupController
 		if (BubbleMenu.isBubbleMenuActive() && BubbleMenu.activeUUID == uuid)
 		{
 			BubbleMenu.moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
-			CGroupController.groupdb.get(uuid).moveTags();
+			//TODO[mottalrd] remove me
+			//CGroupController.groupdb.get(uuid).moveTags();
 		}
 	}
 	
@@ -1311,6 +1333,8 @@ public class CGroupController
 		if(!exists(uuid)){return;}
 		
 		groupdb.get(uuid).deleteChildConnector(childuid);
+		informListenersOfDeletedConnector(uuid);
+		
 	}
 	
 	private static long getDecoratorParent(long uuid)

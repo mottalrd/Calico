@@ -180,10 +180,11 @@ public class CalicoInputManager
 	
 	public static void addCustomInputHandler(long uuid, CalicoAbstractInputHandler handler)
 	{
-		if (inputHandlers.containsKey(uuid))
-		{
-			return;
-		}
+		//TODO[mottalrd][question] why if we want a custom one we go out if it already exist?
+//		if (inputHandlers.containsKey(uuid))
+//		{
+//			return;
+//		}
 		inputHandlers.put(uuid, handler);
 	}
 	

@@ -187,6 +187,7 @@ public class CGroup extends PPath implements Serializable {
 		this.tags.add(tag);
 		//show the tag
 		tag.create();
+		CGroupController.addListener(tag);
 	}
 	
 	/**
@@ -197,15 +198,6 @@ public class CGroup extends PPath implements Serializable {
 		this.tags.remove(tag);
 		//hide the tag from screen
 		tag.delete();
-	}
-	
-	/**
-	 * Move the tags to follow this CGroup
-	 */
-	public void moveTags(){
-		for(Tag tag: tags){
-			tag.move();
-		}
 	}
 	
 	public static void registerPieMenuButton(Class<?> button)
