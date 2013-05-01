@@ -37,7 +37,6 @@ import calico.components.*;
 import calico.components.bubblemenu.BubbleMenu;
 import calico.components.menus.CanvasMenuButton;
 import calico.components.piemenu.PieMenu;
-import calico.components.tags.TagsMenu;
 import calico.controllers.*;
 import calico.events.CalicoEventHandler;
 import calico.iconsets.CalicoIconManager;

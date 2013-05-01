@@ -1,57 +1,22 @@
 package calico.components.tags;
 
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-
-import calico.CalicoOptions;
-import edu.umd.cs.piccolo.nodes.PImage;
 
 public abstract class Tag {
 
-	/** The image representing the tag **/
-	protected Image iconImage;
+	/** The group id this tag belongs to **/
+	protected long guuid;
 	
-	/** The position where this image must be displayed **/
-	private Point tagPosition = new Point(0,0);
-	
-	/** The bounds of this Tag Image **/
-	private Rectangle bounds=null;
-	
-	/**
-	 * 
-	 * @return the Piccolo Image displaying the tag
-	 */
-	public PImage getPImage()
-	{
-		try
-		{	
-			PImage img = new PImage();
-			
-			img.setImage( iconImage );
-			img.setBounds(tagPosition.x,tagPosition.y,CalicoOptions.menu.icon_size,CalicoOptions.menu.icon_size);
-			img.repaint();
-			return img;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			return null;
-		}
+	public long getGUUID() {
+		return guuid;
+	}
+
+	public void setGUUID(long guuid) {
+		this.guuid = guuid;
 	}
 	
-	public void setPosition(Point point)
-	{
-		tagPosition = point;
-		bounds = new Rectangle(point.x, point.y, CalicoOptions.menu.icon_size, CalicoOptions.menu.icon_size);
-	}
+	public abstract void create();
 	
-	public void setBounds(Rectangle r){
-		this.bounds=r;
-	}
+	public abstract void move();
 	
-	public Rectangle getBounds(){
-		return this.bounds;
-	}
-	
+	public abstract void delete();
 }

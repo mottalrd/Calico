@@ -694,6 +694,25 @@ public class PacketHandler
 		double scaleY = p.getDouble();
 		String text = p.getString();
 		
+		//Get the tags written in the packet
+		HashSet<String> tags=getTagsFromPacket(p);
+		
+//		CGroupController.groupdb.get(uuid).finish();
+		CGroupController.groupdb.get(uuid).primative_rotate(rotation);
+		CGroupController.groupdb.get(uuid).primative_scale(scaleX, scaleY);
+		CGroupController.groupdb.get(uuid).setText(text);
+		
+		//add the tags to this group
+		addTags(tags, uuid);
+		
+		CGroupController.no_notify_finish(uuid, captureChildren, false, false);
+		
+//		if (captureChildren)
+//			CGroupController.no_notify_calculate_parenting(uuid, true);
+//		CGroupController.no_notify_finish(uuid, captureChildren);
+	}
+	
+	private static HashSet<String> getTagsFromPacket(CalicoPacket p){
 		HashSet<String> tags=new HashSet<String>();
 		try{
 			String tag="";
@@ -704,14 +723,14 @@ public class PacketHandler
 		}catch(Exception e){
 			//TODO[mottalrd][improvement] Absolutely bad way of loading tags for network communication
 		}
-		
-//		CGroupController.groupdb.get(uuid).finish();
-		CGroupController.groupdb.get(uuid).primative_rotate(rotation);
-		CGroupController.groupdb.get(uuid).primative_scale(scaleX, scaleY);
-		CGroupController.groupdb.get(uuid).setText(text);
+		return tags;
+	}
+	
+	private static void addTags(HashSet<String> tags, long uuid){
 		for(String t: tags)
 			try {
-				CGroupController.add_tag((Tag)Class.forName(t).newInstance(), uuid);
+				Tag tag=(Tag)Class.forName(t).newInstance();
+				CGroupController.groupdb.get(uuid).addTag(tag);
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -719,12 +738,6 @@ public class PacketHandler
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-		
-		CGroupController.no_notify_finish(uuid, captureChildren, false, false);
-		
-//		if (captureChildren)
-//			CGroupController.no_notify_calculate_parenting(uuid, true);
-//		CGroupController.no_notify_finish(uuid, captureChildren);
 	}
 	
 	private static void CANVASVIEW_SCRAP_LOAD(CalicoPacket p)

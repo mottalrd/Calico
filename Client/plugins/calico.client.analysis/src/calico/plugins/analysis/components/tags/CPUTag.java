@@ -1,12 +1,17 @@
 package calico.plugins.analysis.components.tags;
 
+import java.awt.Image;
+
 import calico.plugins.analysis.iconsets.CalicoIconManager;
+import edu.umd.cs.piccolo.nodes.PImage;
 
 public class CPUTag extends PerformanceTag{
 
 	public CPUTag(){
-		super();
-		this.iconImage=CalicoIconManager.getIconImage("tags.buttons.cpu");
-	}	
+		Image img=CalicoIconManager.getIconImage("tags.buttons.cpu");
+		this.iconImage=new PImage();
+		this.iconImage.setImage(img);
+	}
+
 	
 }

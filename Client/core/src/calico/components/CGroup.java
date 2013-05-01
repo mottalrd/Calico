@@ -82,7 +82,6 @@ import calico.components.arrow.AnchorPoint;
 import calico.components.arrow.CArrow;
 import calico.components.decorators.CGroupDecorator;
 import calico.components.tags.Tag;
-import calico.components.tags.TagsMenu;
 import calico.controllers.CArrowController;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
@@ -170,11 +169,6 @@ public class CGroup extends PPath implements Serializable {
 	// This will hold the pie menu buttons (Class<?>)
 	private static ObjectArrayList<Class<?>> pieMenuButtons = new ObjectArrayList<Class<?>>(); 
 	private ObjectArrayList<Tag> tags=new ObjectArrayList<Tag>();
-	private TagsMenu tagsMenu=null;
-	
-	public TagsMenu getTagsMenu(){
-		return tagsMenu;
-	}
 	
 	/** 
 	 * Get the list of tags applied to this CGroup
@@ -188,8 +182,11 @@ public class CGroup extends PPath implements Serializable {
 	 * Adds a tag to this CGroup
 	 * @param newInstance
 	 */
-	public void addTag(Tag newInstance) {
-		this.tags.add(newInstance);
+	public void addTag(Tag tag) {
+		tag.setGUUID(this.uuid);
+		this.tags.add(tag);
+		//show the tag
+		tag.create();
 	}
 	
 	/**
@@ -197,7 +194,18 @@ public class CGroup extends PPath implements Serializable {
 	 * @param tag
 	 */
 	public void removeTag(Tag tag) {
-		this.tags.remove(tag);		
+		this.tags.remove(tag);
+		//hide the tag from screen
+		tag.delete();
+	}
+	
+	/**
+	 * Move the tags to follow this CGroup
+	 */
+	public void moveTags(){
+		for(Tag tag: tags){
+			tag.move();
+		}
 	}
 	
 	public static void registerPieMenuButton(Class<?> button)
@@ -224,8 +232,6 @@ public class CGroup extends PPath implements Serializable {
 		drawPermTemp(false);
 		//this.setTransparency(0f);
 		CalicoDraw.setNodeTransparency(this, 0f);
-		
-		this.tagsMenu=new TagsMenu(uuid);
 		
 //		setPieMenuButtons();
 	}
