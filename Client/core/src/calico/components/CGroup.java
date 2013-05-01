@@ -192,6 +192,14 @@ public class CGroup extends PPath implements Serializable {
 		this.tags.add(newInstance);
 	}
 	
+	/**
+	 * Remove the tag from this CGroup
+	 * @param tag
+	 */
+	public void removeTag(Tag tag) {
+		this.tags.remove(tag);		
+	}
+	
 	public static void registerPieMenuButton(Class<?> button)
 	{
 		if(!pieMenuButtons.contains(button))
@@ -2583,5 +2591,7 @@ public class CGroup extends PPath implements Serializable {
 		}
 		return outgoingpaths;				
 	}
+
+
 
 }

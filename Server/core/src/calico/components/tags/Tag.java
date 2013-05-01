@@ -1,9 +1,13 @@
 package calico.components.tags;
 
 
-/** TODO[mottalrd] The Tag must be an interface 
- * since we have different types of actual tags
+/**
+ * Tags are elements associated to the CGroups
+ * that can be displayed near to them in order
+ * to add additional infos
+ * @author motta
+ *
  */
-public class Tag {
+public abstract class Tag {
 	
 }

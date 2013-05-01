@@ -702,8 +702,7 @@ public class PacketHandler
 				if(!tag.equals(""))tags.add(tag);
 			}while(true);
 		}catch(Exception e){
-			//nothing to do
-			//TODO[mottalrd] Absolutely bad way of loading tags for network communication
+			//TODO[mottalrd][improvement] Absolutely bad way of loading tags for network communication
 		}
 		
 //		CGroupController.groupdb.get(uuid).finish();

@@ -21,7 +21,7 @@ public class TagsMenu {
 	
 	public TagsMenu(long guuid){
 		this.guuid=guuid;
-		tagsContainer = new TagsMenuContainer(this);
+		tagsContainer = new TagsMenuContainer();
 	}
 	
 	public void update() {
@@ -41,15 +41,6 @@ public class TagsMenu {
 			CGroupController.groupdb.get(guuid).getTags().get(i).setPosition(pos);
 			CalicoDraw.setNodeBounds(tagsContainer.getChild(i), pos.getX(), pos.getY(), CalicoOptions.menu.icon_size, CalicoOptions.menu.icon_size);
 		}
-	}
-
-	/**
-	 * Hides the tags menu
-	 */
-	public void clearMenu() {
-		CalicoDraw.removeAllChildrenFromNode(tagsContainer);
-		CalicoDraw.removeNodeFromParent(tagsContainer);
-		CalicoDraw.repaintNode(tagsContainer);
 	}
 	
 	/**
@@ -84,21 +75,19 @@ public class TagsMenu {
 	 * Shows the container of the tags
 	 */
 	private void update_container() {
+		tagsContainer.clear();
 		//TODO[mottalrd][improvement] Each time I move I recreate the container for the images, not really good
 		//TODO[mottalrd][bug] When I restart the client the canvas goes out of sync and reloads the scraps (on console I see [!=== FOUND MISMATCH ===!])
-		tagsContainer=new TagsMenuContainer(this);
 		
-		//Add the tags' images to the container
-		for(Tag tag: CGroupController.groupdb.get(guuid).getTags())
-		{
-			tagsContainer.addChild( tag.getPImage() );
-		}
+		tagsContainer=new TagsMenuContainer();
+		tagsContainer.addTags(CGroupController.groupdb.get(guuid).getTags());
 		
 		//Update the bounds of the menu
 		updateContainerBounds();
 		
 		//Add to canvas
 		long cuid=CCanvasController.getCurrentUUID();
+		//TODO[mottalrd][bug] error when restarting client, no current canvas
 		CalicoDraw.addChildToNode(CCanvasController.canvasdb.get(cuid).getLayer(), tagsContainer);
 		
 		CalicoDraw.setNodeTransparency(tagsContainer, 1.0f);

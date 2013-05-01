@@ -2,41 +2,46 @@ package calico.plugins.analysis.components.buttons;
 
 import javax.swing.SwingUtilities;
 
+import calico.Calico;
+import calico.CalicoDataStore;
 import calico.CalicoDraw;
-import calico.components.bubblemenu.BubbleMenu;
 import calico.components.menus.CanvasMenuButton;
+import calico.controllers.CCanvasController;
 import calico.inputhandlers.InputEventInfo;
 import calico.plugins.analysis.AnalysisNetworkCommands;
 import calico.plugins.analysis.AnalysisPlugin;
+import calico.plugins.analysis.components.activitydiagram.FinalNode;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
 
-/**
- * This class is used to group the common implementations
- * of the different tag buttons for the analysis
- * @author motta
- *
- */
-public class AbstractTagButton extends CanvasMenuButton {
-
+public class CreateFinalNodeButton extends CanvasMenuButton {
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
-	/** 
-	 * The different implementations provide the followings (in their constructors)
-	 * (1) iconString => The icon for this button
-	 * (2) tagClassName => The name of the class of the Tag that must be added to the scrap, e.g. CPUTag.class.getName()
-	 */
-	
-	//protected iconString => look at CanvasMenuButton  
-	protected String tagClassName;
+	public CreateFinalNodeButton(long c) {
+		super();
+		cuid = c;
+
+		this.iconString = "analysis.finalnode";
+		try {
+			setImage(calico.plugins.analysis.iconsets.CalicoIconManager.getIconImage(iconString));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void actionMouseClicked(InputEventInfo event) {
 		if (event.getAction() == InputEventInfo.ACTION_PRESSED) {
 			super.onMouseDown();
 		} else if (event.getAction() == InputEventInfo.ACTION_RELEASED
 				&& isPressed) {
-			//TODO[mottalrd][improvement] better not to rely on this
-			long guuid=BubbleMenu.lastUUID;
-			if(guuid!=0l) AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_ADD_TAG ,guuid, this.tagClassName);
+			long new_uuid = Calico.uuid();
+			long cuuid=CCanvasController.getCurrentUUID();
+			int x=CalicoDataStore.ScreenWidth / 3;
+			int y=CalicoDataStore.ScreenHeight / 3;
+			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_CREATE_ACTIVITY_NODE_TYPE,new_uuid, cuuid,x,y, FinalNode.class.getName());
 			super.onMouseUp();
 		}
 
@@ -87,5 +92,4 @@ public class AbstractTagButton extends CanvasMenuButton {
 			CalicoDraw.repaintNode(this);
 		}
 	}	
-	
 }

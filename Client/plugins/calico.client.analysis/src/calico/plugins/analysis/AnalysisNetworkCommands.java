@@ -16,5 +16,7 @@ public class AnalysisNetworkCommands {
 	//TODO[mottalrd] put back initial node and final node
 	public static final int ANALYSIS_FINAL_NODE_LOAD = 7814;
 	public static final int ANALYSIS_INITIAL_NODE_LOAD = 7816;
+	
+	public static final int ANALYSIS_CREATE_ACTIVITY_NODE_TYPE = 7803;
 
 }

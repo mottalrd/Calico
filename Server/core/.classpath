@@ -30,5 +30,6 @@
 	<classpathentry kind="lib" path="lib/piccolo.jar"/>
 	<classpathentry kind="lib" path="lib/piccolox.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="lib" path="lib/jshapes.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

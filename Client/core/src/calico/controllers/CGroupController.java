@@ -345,7 +345,6 @@ public class CGroupController
 		if (BubbleMenu.isBubbleMenuActive() && BubbleMenu.activeUUID == uuid)
 		{
 			BubbleMenu.moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
-			//TODO[mottalrd] big bug: if I close a client and I restart this line makes the scrap behaves in a crazy manner
 			CGroupController.groupdb.get(uuid).getTagsMenu().moveIconPositions(CGroupController.groupdb.get(uuid).getBounds());
 		}
 	}
@@ -2009,8 +2008,11 @@ public class CGroupController
 		CGroupController.groupdb.get(uuid).addTag(tag);
 		CGroupController.groupdb.get(uuid).getTagsMenu().update();
 	}
-
-
+	
+	public static void remove_tag(Tag tag, long guuid) {
+		CGroupController.groupdb.get(guuid).removeTag(tag);
+		CGroupController.groupdb.get(guuid).getTagsMenu().update();
+	}
 
 	
 }

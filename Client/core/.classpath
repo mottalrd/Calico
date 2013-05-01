@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/dsiutils-1.0.7.jar"/>
-	<classpathentry kind="lib" path="lib/fastutil-5.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/fastutil-5.1.5.jar" sourcepath="/home/motta/Downloads/fastutil-5.1.5-sources.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient-4.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/httpcore-4.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/httpmime-4.0.1.jar"/>
@@ -25,11 +25,12 @@
 	<classpathentry kind="lib" path="lib/pop3.jar"/>
 	<classpathentry kind="lib" path="lib/smtp.jar"/>
 	<classpathentry kind="lib" path="lib/imgscalr-lib-4.2.jar"/>
-	<classpathentry kind="lib" path="/calico.client.analysis.gui/lib/org.eclipse.emf.common_2.7.0.v20120127-1122.jar"/>
-	<classpathentry kind="lib" path="/calico.client.analysis.gui/lib/org.eclipse.emf.ecore_2.7.0.v20120127-1122.jar"/>
-	<classpathentry kind="lib" path="/calico.client.analysis.gui/lib/org.eclipse.emf.ecore.xmi_2.7.0.v20120127-1122.jar"/>
-	<classpathentry kind="lib" path="/calico.client.analysis.gui/lib/org.eclipse.emf.mapping.ecore2xml_2.7.0.v20120130-0943.jar"/>
-	<classpathentry kind="lib" path="/calico.client.analysis.gui/lib/org.eclipse.uml2.common_1.6.0.v201105021727.jar"/>
-	<classpathentry kind="lib" path="/calico.client.analysis.gui/lib/org.eclipse.uml2.uml_3.2.100.v201108110105.jar"/>
+	<classpathentry kind="lib" path="lib/jshapes.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.common_2.7.0.v20120127-1122.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore_2.7.0.v20120127-1122.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.ecore.xmi_2.7.0.v20120127-1122.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.emf.mapping.ecore2xml_2.7.0.v20120130-0943.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.uml2.common_1.6.0.v201105021727.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_3.2.100.v201108110105.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

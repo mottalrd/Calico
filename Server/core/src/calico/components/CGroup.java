@@ -129,6 +129,14 @@ public class CGroup {
 	public void addTag(Tag newInstance) {
 		this.tags.add(newInstance);
 	}
+	
+	/**
+	 * Remove the tag from this CGroup
+	 * @param tag
+	 */
+	public void removeTag(Tag tag) {
+		this.tags.remove(tag);		
+	}
 
 	
 	public CGroup(long uuid, long cuid, long puid, boolean isPerm) {

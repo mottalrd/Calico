@@ -1,5 +1,7 @@
 package calico.plugins.analysis;
 
+import java.awt.Polygon;
+
 import org.apache.log4j.Logger;
 
 import calico.CalicoOptions;
@@ -11,11 +13,16 @@ import calico.networking.PacketHandler;
 import calico.networking.netstuff.CalicoPacket;
 import calico.networking.netstuff.NetworkCommand;
 import calico.plugins.CalicoPlugin;
+import calico.plugins.analysis.components.activitydiagram.FinalNode;
+import calico.plugins.analysis.components.activitydiagram.InitialNode;
 import calico.plugins.analysis.components.buttons.CPUTagButton;
+import calico.plugins.analysis.components.buttons.CreateFinalNodeButton;
+import calico.plugins.analysis.components.buttons.CreateInitialNodeButton;
 import calico.plugins.analysis.components.buttons.DBTagButton;
 import calico.plugins.analysis.components.buttons.NETTagButton;
 import calico.plugins.analysis.components.buttons.RAMTagButton;
 import calico.plugins.analysis.controllers.ADMenuController;
+import calico.plugins.analysis.utils.ActivityShape;
 
 /*
  * The entry point to load the plugin and the main logic is here
@@ -52,6 +59,15 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 			case AnalysisNetworkCommands.ANALYSIS_ADD_TAG:
 				ANALYSIS_ADD_TAG(p);
 				break;
+			case AnalysisNetworkCommands.ANALYSIS_INITIAL_NODE_LOAD:
+				ANALYSIS_INITIAL_NODE_LOAD(p);
+				break;		
+			case AnalysisNetworkCommands.ANALYSIS_FINAL_NODE_LOAD:
+				ANALYSIS_FINAL_NODE_LOAD(p);
+				break;	
+			case AnalysisNetworkCommands.ANALYSIS_CREATE_ACTIVITY_NODE_TYPE:
+				this.ANALYSIS_CREATE_ACTIVITY_NODE_TYPE(p);
+				break;
 		}
 	}
 
@@ -74,6 +90,8 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		CanvasStatusBar.addMenuButtonRightAligned(DBTagButton.class);
 		CanvasStatusBar.addMenuButtonRightAligned(RAMTagButton.class);
 		CanvasStatusBar.addMenuButtonRightAligned(NETTagButton.class);
+		CanvasStatusBar.addMenuButtonRightAligned(CreateInitialNodeButton.class);
+		CanvasStatusBar.addMenuButtonRightAligned(CreateFinalNodeButton.class);
 		
 		
 		//Register to the events I am interested in 
@@ -164,6 +182,94 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		//CGroup.registerPieMenuButton(ServiceTimeBubbleButton.class);
 		//CGroup.registerPieMenuButton(RunAnalysisBubbleButton.class);
 		//example: MenuController.getInstance().showMenu(cuid);
+	}
+	
+	private void ANALYSIS_FINAL_NODE_LOAD(CalicoPacket p) {
+		p.rewind();
+		p.getInt();
+		//taken from PacketHandler.GROUP_LOAD()		
+		long uuid = p.getLong();
+		long cuid = p.getLong();
+		//TODO[mottalrd][improvement] do we need to load the other packet information if we are not using them?
+		long puid = p.getLong();
+		boolean isperm = p.getBoolean();
+		int count = p.getCharInt();
+		
+		if(count<=0)
+		{
+			return;
+		}
+		
+		int[] xArr = new int[count], yArr = new int[count];
+		for(int i=0;i<count;i++)
+		{
+			xArr[i] = p.getInt();
+			yArr[i] = p.getInt();
+		}
+		boolean captureChildren = p.getBoolean();
+		double rotation = p.getDouble();
+		double scaleX = p.getDouble();
+		double scaleY = p.getDouble();
+		String text = p.getString();
+		//begin analysis node
+		
+		Polygon poly = new Polygon(xArr, yArr, count);
+		
+		ADMenuController.no_notify_create_activitydiagram_node(uuid, cuid, poly, FinalNode.class, ActivityShape.FINALNODE, "");
+		
+	}
+
+	private void ANALYSIS_INITIAL_NODE_LOAD(CalicoPacket p) {
+		p.rewind();
+		p.getInt();
+		//taken from PacketHandler.GROUP_LOAD()		
+		long uuid = p.getLong();
+		long cuid = p.getLong();
+		//TODO[mottalrd][improvement] do we need to load the other packet information if we are not using them?
+		long puid = p.getLong();
+		boolean isperm = p.getBoolean();
+		int count = p.getCharInt();
+		
+		if(count<=0)
+		{
+			return;
+		}
+		
+		int[] xArr = new int[count], yArr = new int[count];
+		for(int i=0;i<count;i++)
+		{
+			xArr[i] = p.getInt();
+			yArr[i] = p.getInt();
+		}
+		boolean captureChildren = p.getBoolean();
+		double rotation = p.getDouble();
+		double scaleX = p.getDouble();
+		double scaleY = p.getDouble();
+		String text = p.getString();
+		//begin analysis node
+		
+		Polygon poly = new Polygon(xArr, yArr, count);
+		
+		ADMenuController.no_notify_create_activitydiagram_node(uuid, cuid, poly, InitialNode.class, ActivityShape.INITIALNODE, "");
+		
+	}
+	
+	private void ANALYSIS_CREATE_ACTIVITY_NODE_TYPE(CalicoPacket p){
+		p.rewind();
+		p.getInt();
+		long new_uuid=p.getLong();
+		long cuuid=p.getLong();
+		int x=p.getInt();
+		int y=p.getInt();
+		String type_name=p.getString();
+		
+		if(type_name.equals(InitialNode.class.getName())){
+			ADMenuController.create_initial_node(new_uuid,cuuid,x,y);
+		}
+		else if(type_name.equals(FinalNode.class.getName())){
+			ADMenuController.create_final_node(new_uuid,cuuid,x,y);
+		}
+		
 	}
 
 

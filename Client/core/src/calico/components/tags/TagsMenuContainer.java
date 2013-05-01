@@ -1,28 +1,33 @@
 package calico.components.tags;
 
+import java.util.List;
+
+import calico.CalicoDraw;
 import edu.umd.cs.piccolox.nodes.PComposite;
 
 public class TagsMenuContainer extends PComposite{
 
 	private static final long serialVersionUID = 1L;
-	private TagsMenu tagsMenu;
-
-	public TagsMenuContainer(TagsMenu menu){
-		this.tagsMenu=menu;
-	}
 	
 	/**
-	 * Add the elements to be displayed with thin container
+	 * Clear the tags container from the screen
 	 */
-	public void addTagsToBeDisplayed()
-	{
-		int buttons = tagsMenu.getTagsCount();
-		for(int i=0;i<buttons;i++)
+	public void clear() {
+		CalicoDraw.removeAllChildrenFromNode(this);
+		CalicoDraw.removeNodeFromParent(this);
+		CalicoDraw.repaintNode(this);
+	}
+
+	/**
+	 * Add the tags images to the container
+	 * such that thay can be displayed on the screen
+	 * @param tags
+	 */
+	public void addTags(List<Tag> tags) {
+		//Add the tags' images to the container
+		for(Tag tag: tags)
 		{
-			//Do not use CalicoDraw here. The container is not yet added to a visible canvas.
-			//The children need to be available on the active thread.
-			addChild( tagsMenu.getTag(i).getPImage() );
-			//CalicoDraw.addChildToNode(this, BubbleMenu.getButton(i).getPImage());
+			this.addChild( tag.getPImage() );
 		}
 	}
 	

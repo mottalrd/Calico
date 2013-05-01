@@ -34,6 +34,7 @@ import calico.components.composable.ComposableElement;
 import calico.components.composable.ComposableElementController;
 import calico.components.decorators.CGroupDecorator;
 import calico.components.decorators.CListDecorator;
+import calico.components.tags.Tag;
 import calico.networking.*;
 import calico.networking.netstuff.*;
 import calico.utils.CalicoUtils;
@@ -1446,6 +1447,14 @@ public class CGroupController
 			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
 			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
 		}
+	}
+	
+	public static void add_tag(Tag tag, long uuid) {
+		CGroupController.groups.get(uuid).addTag(tag);
+	}
+	
+	public static void remove_tag(Tag tag, long guuid) {
+		CGroupController.groups.get(guuid).removeTag(tag);
 	}
 	
 }
