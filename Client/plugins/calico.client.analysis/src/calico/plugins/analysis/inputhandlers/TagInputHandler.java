@@ -14,9 +14,16 @@ public class TagInputHandler extends CGroupInputHandler{
 	}
 
 	public void actionReleased(InputEventInfo e){
-		super.actionReleased(e);
-		if(performanceTag.isDecisionForkMenuON())
+		
+		
+		//If we clicked on the decision/fork menu, switch the menu
+		if(performanceTag.isDecisionForkMenuON() && performanceTag.getMenuDecisionForkBounds().contains(e.getX(), e.getY())){
 			performanceTag.switchDecisionForkMenu();
+		}else{
+			//the default behavior
+			super.actionReleased(e);
+		}
+			
 	}
 
 	

@@ -1,6 +1,7 @@
 package calico.plugins.analysis.controllers;
 
 import java.awt.Polygon;
+import java.util.List;
 
 import calico.CalicoDraw;
 import calico.components.CGroup;
@@ -66,7 +67,9 @@ public class ADMenuController {
 			CGroupController.groupdb.get(guuid).addTag(tag);
 		}else{
 			//Remove the tag from the scrap
-			CGroupController.groupdb.get(guuid).removeTag(tag);
+			List<Tag> tags=CGroupController.groupdb.get(guuid).getTags();
+			Tag alreadyInTag=tags.get(tags.indexOf(tag));
+			CGroupController.groupdb.get(guuid).removeTag(alreadyInTag);
 		}
 		
 	}

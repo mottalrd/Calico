@@ -195,9 +195,14 @@ public class CGroup extends PPath implements Serializable {
 	 * @param tag
 	 */
 	public void removeTag(Tag tag) {
-		this.tags.remove(tag);
-		//hide the tag from screen
+		//Hide the tag from screen
 		tag.delete();
+		
+		//Remove the tag from my list
+		this.tags.remove(tag);
+		
+		//Remove the tag from the listener list
+		CGroupController.removeListener(tag);
 	}
 	
 	public static void registerPieMenuButton(Class<?> button)

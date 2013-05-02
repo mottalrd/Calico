@@ -38,6 +38,7 @@ public abstract class PerformanceTag extends Tag{
 	
 	/** The response time of this activity node */
 	protected double responseTime = 1.0d;
+	private int imagePosition;
 	
 	public PerformanceTag(){
 		Image img=CalicoIconManager.getIconImage("tags.buttons.menu_decision_fork_fork");
@@ -51,6 +52,10 @@ public abstract class PerformanceTag extends Tag{
 		//set default
 		menuDecisionFork=menuDecisionFork_DecisionSelected;
 		this.isDecision=true;
+	}
+	
+	public PBounds getMenuDecisionForkBounds(){
+		return menuDecisionFork.getBounds();
 	}
 	
 	public boolean isDecisionForkMenuON() {
@@ -127,14 +132,8 @@ public abstract class PerformanceTag extends Tag{
 
 	@Override
 	public void delete() {
-		//TODO[mottalrd][bug] delete is not working, the image remains there
-		//TODO[mottalrd][bug] (0) add tag (1) delete tag, (2) exit, (3) enter again, => surprise, the tag is back again
-		CalicoDraw.removeChildFromNode(CCanvasController.canvasdb.get(CCanvasController.getCurrentUUID()).getLayer(), iconImage);
-		iconImage.setTransparency(0);
-		iconImage.setPaintInvalid(true);
-		CalicoDraw.setVisible(iconImage, false);
 		CalicoDraw.removeNodeFromParent(iconImage);
-		CalicoDraw.repaintNode(iconImage);
+		iconImage.repaint();
 	}
 	
 	public void switchDecisionForkMenu() {
