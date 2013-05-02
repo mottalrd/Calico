@@ -2,53 +2,26 @@ package calico.plugins.analysis.components.tags;
 
 import java.awt.Image;
 
-import calico.CalicoDraw;
-import calico.components.CGroup;
-import calico.components.tags.Tag;
-import calico.controllers.CCanvasController;
-import calico.controllers.CGroupController;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
 import edu.umd.cs.piccolo.nodes.PImage;
-import edu.umd.cs.piccolo.util.PBounds;
 
-public class RunTag extends Tag{
+public class RunTag extends AnalysisTag{
 
 	//TODO[mottalrd][improvement] hard-coded image size
-	private static int runTagImageWIDTH=49;
-	private static int runTagImageHEIGHT=36;
-	
-	private PImage runTagImage;
+	private static int RUN_TAG_IMAGE_WIDTH=49;
+	private static int RUN_TAG_IMAGE_HEIGHT=36;
 
 	public RunTag(){
 		Image img=CalicoIconManager.getIconImage("tags.buttons.run_tag");
-		this.runTagImage=new PImage();
-		this.runTagImage.setImage(img);
-	}
-	
-	public void create(){
-		CGroup group=CGroupController.groupdb.get(this.guuid);
+		this.iconImage=new PImage();
+		this.iconImage.setImage(img);
 		
-		//drawing stuffs
-		PBounds bounds=group.getBounds();
-		runTagImage.setBounds(bounds.x, bounds.y - runTagImageHEIGHT,runTagImageWIDTH,runTagImageHEIGHT);
-		runTagImage.repaint();
-		CalicoDraw.addChildToNode(CCanvasController.canvasdb.get(CCanvasController.getCurrentUUID()).getLayer(), runTagImage);
-	}
-	
-	public void move(){
-		PBounds bounds=CGroupController.groupdb.get(this.guuid).getBounds();
-		runTagImage.setBounds(bounds.x,bounds.y - runTagImageHEIGHT,runTagImageWIDTH,runTagImageHEIGHT);
-		runTagImage.repaint();
-	}
-	
-	public void delete(){
-		CalicoDraw.removeNodeFromParent(runTagImage);
-		runTagImage.repaint();
-	}
+		this.iconWidth=RUN_TAG_IMAGE_WIDTH;
+		this.iconHeight=RUN_TAG_IMAGE_HEIGHT;
+		
+		this.xShift=0;
+		this.yShift=(-1)*RUN_TAG_IMAGE_HEIGHT;
 
-	@Override
-	public void groupMoved(long uuid) {
-		if(uuid==this.guuid) this.move();
 	}
 
 	@Override
@@ -67,16 +40,6 @@ public class RunTag extends Tag{
 	public void groupHasLostAConnector(long uuid) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public boolean equals(Object o){
-		if(!(o instanceof PerformanceTag)) return false;
-		PerformanceTag tag=(PerformanceTag) o;
-		return tag.getClass().getName().equals(this.getClass().getName());
-	}
-	
-	public int hashCode(){
-		return this.getClass().getName().hashCode();
 	}
 	
 }

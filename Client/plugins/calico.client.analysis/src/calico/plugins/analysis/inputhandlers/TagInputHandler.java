@@ -2,28 +2,23 @@ package calico.plugins.analysis.inputhandlers;
 
 import calico.inputhandlers.CGroupInputHandler;
 import calico.inputhandlers.InputEventInfo;
-import calico.plugins.analysis.components.tags.PerformanceTag;
+import calico.plugins.analysis.components.tags.ForkDecisionTag;
 
 public class TagInputHandler extends CGroupInputHandler{
 
-	private PerformanceTag performanceTag;
+	private ForkDecisionTag tag;
 
-	public TagInputHandler(long u, PerformanceTag performanceTag) {
+	public TagInputHandler(long u, ForkDecisionTag tag) {
 		super(u);
-		this.performanceTag=performanceTag;
+		this.tag=tag;
 	}
 
 	public void actionReleased(InputEventInfo e){
 		
-		
-		//If we clicked on the decision/fork menu, switch the menu
-		if(performanceTag.isDecisionForkMenuON() && performanceTag.getMenuDecisionForkBounds().contains(e.getX(), e.getY())){
-			performanceTag.switchDecisionForkMenu();
-		}else{
-			//the default behavior
+		if(tag.getIconImageBounds().contains(e.getX(), e.getY()))
+			tag.switchForkDecisionMenu();
+		else
 			super.actionReleased(e);
-		}
-			
 	}
 
 	

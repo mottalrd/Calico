@@ -129,7 +129,8 @@ public class CGroupController
 	
 	private static void informListenersOfMove(long uuid)
 	{
-		for (Listener listener : listeners)
+		ArrayList<Listener> copyOfListeners=new ArrayList<Listener>(listeners);
+		for (Listener listener : copyOfListeners)
 		{
 			listener.groupMoved(uuid);
 		}
@@ -137,7 +138,8 @@ public class CGroupController
 	
 	private static void informListenersOfNewConnector(long uuid)
 	{
-		for (Listener listener : listeners)
+		ArrayList<Listener> copyOfListeners=new ArrayList<Listener>(listeners);
+		for (Listener listener : copyOfListeners)
 		{
 			listener.groupHasNewConnector(uuid);
 		}
@@ -145,7 +147,8 @@ public class CGroupController
 	
 	private static void informListenersOfDeletedConnector(long uuid)
 	{
-		for (Listener listener : listeners)
+		ArrayList<Listener> copyOfListeners=new ArrayList<Listener>(listeners);
+		for (Listener listener : copyOfListeners)
 		{
 			listener.groupHasLostAConnector(uuid);
 		}

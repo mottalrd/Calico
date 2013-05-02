@@ -150,26 +150,8 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		ADMenuController.add_tag(guuid, type_name);		
 	}
 	
-	//TODO[mottalrd] check if we still need them
-//	private void ANALYSIS_ADD_PROBABILITY_TO_DECISION_NODE(CalicoPacket p){
-//		p.rewind();
-//		p.getInt();
-//		long uuid=p.getLong();
-//		double probability=p.getDouble();
-//		
-//		ADBubbleMenuController.add_probability(uuid, probability);
-//	}
-//	
-//
-//	private void ANALYSIS_RUN_ANALYSIS(CalicoPacket p){
-//		p.rewind();
-//		p.getInt();
-//		long uuid=p.getLong();
-//		double distance=p.getDouble();
-//		
-//		ADAnalysisController.runAnalysis(uuid, distance);
-//	}
-	
+	//TODO[mottalrd] Probability +/- buttons
+	//TODO[mottalrd] Attach the analysis procedure
 	
 	private void VIEWING_SINGLE_CANVAS(CalicoPacket p) {
 		p.rewind();

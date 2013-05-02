@@ -24,7 +24,7 @@ public class FinalNode extends CGroup implements ActivityScrap{
 		//color = new Color(245,245,245);
 	}
 
-	//TODO[mottalrd][bug] when I rejoin the server the final node is not painter correctly
+	//TODO[mottalrd][bug] when I rejoin the server the final node is not painted correctly
 	protected void paint(final PPaintContext paintContext) {
 		super.paint(paintContext);
 		Point2D pivotPoint=Geometry.getMidPoint2D(points);

@@ -1,6 +1,5 @@
 package calico.plugins.analysis.components.buttons;
 
-import calico.plugins.analysis.components.tags.CPUTag;
 import calico.plugins.analysis.components.tags.RunTag;
 
 public class RunTagButton extends AbstractTagButton {
