@@ -16,7 +16,7 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 public abstract class PerformanceTag extends Tag{
 
-	//TODO[mottalrd][bug] Deleting a scrap not working well on server
+	//TODO[mottalrd] the decision/fork menu must be a tag too
 
 	//The image corresponding to the decision/fork menu
 	private PImage menuDecisionFork_DecisionSelected;
@@ -83,7 +83,7 @@ public abstract class PerformanceTag extends Tag{
 		if(uuid==this.guuid){
 			//check if we need to show the decision/fork menu
 			CGroup group=CGroupController.groupdb.get(this.guuid);
-			if( group.getChildConnectors().length>1 ){
+			if( group.getOutgoingPaths().size() >1 ){
 				//Draw the decision/fork menu
 				PBounds bounds=group.getBounds();
 				menuDecisionFork.setBounds(bounds.x+bounds.width-menuDecisionForkWIDTH,bounds.y+bounds.height-menuDecisionForkHEIGHT,menuDecisionForkWIDTH,menuDecisionForkHEIGHT);
@@ -96,8 +96,11 @@ public abstract class PerformanceTag extends Tag{
 	}
 	
 	public void groupHasLostAConnector(long uuid){
-		if(uuid==this.guuid){
-			//TODO[mottalrd] when we delete a connector we must check if we need to delete the decision fork menu
+		CGroup group=CGroupController.groupdb.get(this.guuid);
+		if(uuid==this.guuid &&  group.getIncomingPaths().size()<2){
+			CalicoDraw.removeNodeFromParent(menuDecisionFork);
+			menuDecisionFork.repaint();
+			this.isDecisionForkMenuON=false;
 		}
 	}
 	
@@ -132,6 +135,8 @@ public abstract class PerformanceTag extends Tag{
 
 	@Override
 	public void delete() {
+		
+		//TODO[mottalrd][bug] (1) tag element (2) delete tag (3) exit client and enter again => tag is back
 		CalicoDraw.removeNodeFromParent(iconImage);
 		iconImage.repaint();
 	}

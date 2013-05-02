@@ -21,6 +21,7 @@ import calico.plugins.analysis.components.buttons.CreateInitialNodeButton;
 import calico.plugins.analysis.components.buttons.DBTagButton;
 import calico.plugins.analysis.components.buttons.NETTagButton;
 import calico.plugins.analysis.components.buttons.RAMTagButton;
+import calico.plugins.analysis.components.buttons.RunTagButton;
 import calico.plugins.analysis.controllers.ADMenuController;
 import calico.plugins.analysis.utils.ActivityShape;
 
@@ -92,6 +93,7 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		CanvasStatusBar.addMenuButtonRightAligned(NETTagButton.class);
 		CanvasStatusBar.addMenuButtonRightAligned(CreateInitialNodeButton.class);
 		CanvasStatusBar.addMenuButtonRightAligned(CreateFinalNodeButton.class);
+		CanvasStatusBar.addMenuButtonRightAligned(RunTagButton.class);
 		
 		
 		//Register to the events I am interested in 
