@@ -152,6 +152,7 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 	
 	//TODO[mottalrd] Probability +/- buttons
 	//TODO[mottalrd] Attach the analysis procedure
+	//TODO[mottalrd] Fix server side of the plugin
 	
 	private void VIEWING_SINGLE_CANVAS(CalicoPacket p) {
 		p.rewind();
