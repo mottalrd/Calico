@@ -140,10 +140,16 @@ public abstract class PerformanceTag extends Tag{
 		CGroup group=CGroupController.groupdb.get(this.guuid);
 		PBounds bounds=group.getBounds();
 		if(this.isDecision==true) {
+			CalicoDraw.removeNodeFromParent(menuDecisionFork_DecisionSelected);
+			iconImage.repaint();
+			
 			menuDecisionFork=this.menuDecisionFork_ForkSelected;
 			this.isDecision=false;
 		}
 		else{
+			CalicoDraw.removeNodeFromParent(menuDecisionFork_ForkSelected);
+			iconImage.repaint();
+			
 			menuDecisionFork=this.menuDecisionFork_DecisionSelected;
 			this.isDecision=true;
 		}
