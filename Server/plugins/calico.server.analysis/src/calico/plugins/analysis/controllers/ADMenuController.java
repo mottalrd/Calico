@@ -47,7 +47,7 @@ public class ADMenuController {
 	 *************************************************/		
 	public static void no_notify_add_tag(long guuid, String tag_type){
 		//First get the tag type we want to add to this scrap
-		Tag tag=Tag.makeNewInstance(tag_type);
+		Tag tag=Tag.makeNewInstance(tag_type, guuid);
 		
 		if(!CGroupController.groups.get(guuid).getTags().contains(tag)){
 			//Add the tag to the scrap
@@ -60,7 +60,7 @@ public class ADMenuController {
 	
 	public static void no_notify_remove_tag(long guuid, String tag_type){
 		//First get the tag type we want to add to this scrap
-		Tag tag=Tag.makeNewInstance(tag_type);
+		Tag tag=Tag.makeNewInstance(tag_type, guuid);
 		
 		//If the tag is already in there, remove it
 		if(CGroupController.groups.get(guuid).getTags().contains(tag)){
