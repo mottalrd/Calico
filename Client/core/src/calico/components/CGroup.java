@@ -185,7 +185,8 @@ public class CGroup extends PPath implements Serializable {
 	public void addTag(Tag tag) {
 		tag.setGUUID(this.uuid);
 		this.tags.add(tag);
-		//show the tag
+		//perform tag creation operations 
+		//(display the icon, or whatever)
 		tag.create();
 		CGroupController.addListener(tag);
 	}
@@ -1303,6 +1304,18 @@ public class CGroup extends PPath implements Serializable {
 		
 		//this.setPaintInvalid(true);
 		CalicoDraw.setNodePaintInvalid(this, true);
+	}
+	
+	public Polygon getPoints(){
+		return this.points;
+	}
+	
+	public void setPoints(Polygon inPoints){
+		this.points=inPoints;
+	}
+	
+	public void resetPoints(){
+		this.points.reset();
 	}
 
 	// public void shrinkToConvexHull() {

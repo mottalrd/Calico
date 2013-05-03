@@ -13,7 +13,7 @@ import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
 
 
-public class ForkDecisionTag extends AnalysisTag{
+public class ForkDecisionTag extends TagWithImage{
 
 	//TODO[mottalrd][improvement] hard-coded image size
 	private static int MENU_DECISION_FORK_WIDTH=80;

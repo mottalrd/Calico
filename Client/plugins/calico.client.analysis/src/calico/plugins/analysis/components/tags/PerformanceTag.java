@@ -6,7 +6,7 @@ import calico.controllers.CGroupController;
 import calico.plugins.analysis.AnalysisNetworkCommands;
 import calico.plugins.analysis.AnalysisPlugin;
 
-public abstract class PerformanceTag extends AnalysisTag{
+public abstract class PerformanceTag extends TagWithImage{
 
 	public PerformanceTag(){
 		this.iconWidth=CalicoOptions.menu.icon_size;

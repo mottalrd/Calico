@@ -21,4 +21,18 @@ public abstract class Tag implements Listener{
 	public abstract void move();
 	
 	public abstract void delete();
+	
+	public static Tag makeNewInstance(String tagClassName){
+		Tag newTag=null;;
+		try {
+			newTag = (Tag)Class.forName(tagClassName).newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return newTag;
+	}
 }

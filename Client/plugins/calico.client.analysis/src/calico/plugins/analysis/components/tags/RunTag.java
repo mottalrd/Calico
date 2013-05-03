@@ -5,7 +5,7 @@ import java.awt.Image;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
 import edu.umd.cs.piccolo.nodes.PImage;
 
-public class RunTag extends AnalysisTag{
+public class RunTag extends TagWithImage{
 
 	//TODO[mottalrd][improvement] hard-coded image size
 	private static int RUN_TAG_IMAGE_WIDTH=49;

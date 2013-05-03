@@ -2,13 +2,12 @@ package calico.plugins.analysis.components.tags;
 
 import calico.CalicoDraw;
 import calico.components.CGroup;
-import calico.components.tags.Tag;
 import calico.controllers.CCanvasController;
 import calico.controllers.CGroupController;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
 
-public abstract class AnalysisTag extends Tag{
+public abstract class TagWithImage extends AbstractTag{
 
 	/** The image representing the tag **/
 	protected PImage iconImage;
@@ -47,16 +46,6 @@ public abstract class AnalysisTag extends Tag{
 	
 	public PBounds getIconImageBounds(){
 		return iconImage.getBounds();
-	}
-	
-	public boolean equals(Object o){
-		if(!(o instanceof AnalysisTag)) return false;
-		AnalysisTag tag=(AnalysisTag) o;
-		return tag.getClass().getName().equals(this.getClass().getName());
-	}
-	
-	public int hashCode(){
-		return this.getClass().getName().hashCode();
 	}
 	
 	/**

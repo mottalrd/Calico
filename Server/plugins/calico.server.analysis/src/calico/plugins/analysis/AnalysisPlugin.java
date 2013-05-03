@@ -2,7 +2,6 @@ package calico.plugins.analysis;
 
 import it.unimi.dsi.fastutil.longs.LongSet;
 
-import java.awt.Polygon;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -14,10 +13,7 @@ import calico.events.CalicoEventHandler;
 import calico.events.CalicoEventListener;
 import calico.networking.netstuff.CalicoPacket;
 import calico.plugins.AbstractCalicoPlugin;
-import calico.plugins.analysis.components.activitydiagram.FinalNode;
-import calico.plugins.analysis.components.activitydiagram.InitialNode;
 import calico.plugins.analysis.controllers.ADMenuController;
-import calico.plugins.analysis.utils.ActivityShape;
 
 
 /*
@@ -52,15 +48,9 @@ public class AnalysisPlugin extends AbstractCalicoPlugin implements CalicoEventL
 			case AnalysisNetworkCommands.ANALYSIS_ADD_TAG:
 				ANALYSIS_ADD_TAG(p,c);
 				break;
-			case AnalysisNetworkCommands.ANALYSIS_CREATE_ACTIVITY_NODE_TYPE:
-				this.ANALYSIS_CREATE_ACTIVITY_NODE_TYPE(p);
-				break;
-			case AnalysisNetworkCommands.ANALYSIS_INITIAL_NODE_LOAD:
-				ANALYSIS_INITIAL_NODE_LOAD(p, c);
-				break;
-			case AnalysisNetworkCommands.ANALYSIS_FINAL_NODE_LOAD:
-				ANALYSIS_FINAL_NODE_LOAD(p, c);
-				break;
+			case AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG:
+				ANALYSIS_REMOVE_TAG(p,c);
+				break;				
 		}
 	}
 
@@ -131,98 +121,17 @@ public class AnalysisPlugin extends AbstractCalicoPlugin implements CalicoEventL
 		}
 	}
 	
-	private void ANALYSIS_FINAL_NODE_LOAD(CalicoPacket p, Client c) {
+	private void ANALYSIS_REMOVE_TAG(CalicoPacket p, Client c){
 		p.rewind();
 		p.getInt();
-		// taken from PacketHandler.GROUP_LOAD()
-		long uuid = p.getLong();
-		long cuid = p.getLong();
-		long puid = p.getLong();
-		boolean isperm = p.getBoolean();
-		int count = p.getCharInt();
-
-		if (count <= 0) {
-			return;
-		}
-
-		int[] xArr = new int[count], yArr = new int[count];
-		for (int i = 0; i < count; i++) {
-			xArr[i] = p.getInt();
-			yArr[i] = p.getInt();
-		}
-		boolean captureChildren = p.getBoolean();
-		double rotation = p.getDouble();
-		double scaleX = p.getDouble();
-		double scaleY = p.getDouble();
-		String text = p.getString();
-		// begin analysis node
-
-		Polygon poly = new Polygon(xArr, yArr, count);
-
-		ADMenuController.no_notify_create_activitydiagram_node(uuid, cuid,
-				poly, FinalNode.class, ActivityShape.FINALNODE, "");
-
-		if (c != null) {
-			ClientManager.send_except(c, p);
-		}
-		// for undo
-		CCanvasController.snapshot_group(uuid);
-	}
-
-	private void ANALYSIS_INITIAL_NODE_LOAD(CalicoPacket p, Client c) {
-		p.rewind();
-		p.getInt();
-		// taken from PacketHandler.GROUP_LOAD()
-		long uuid = p.getLong();
-		long cuid = p.getLong();
-		long puid = p.getLong();
-		boolean isperm = p.getBoolean();
-		int count = p.getCharInt();
-
-		if (count <= 0) {
-			return;
-		}
-
-		int[] xArr = new int[count], yArr = new int[count];
-		for (int i = 0; i < count; i++) {
-			xArr[i] = p.getInt();
-			yArr[i] = p.getInt();
-		}
-		boolean captureChildren = p.getBoolean();
-		double rotation = p.getDouble();
-		double scaleX = p.getDouble();
-		double scaleY = p.getDouble();
-		String text = p.getString();
-		// begin analysis node
-
-		Polygon poly = new Polygon(xArr, yArr, count);
-
-		ADMenuController.no_notify_create_activitydiagram_node(uuid, cuid,
-				poly, InitialNode.class, ActivityShape.INITIALNODE, "");
-
-		if (c != null) {
-			ClientManager.send_except(c, p);
-		}
-		// for undo
-		CCanvasController.snapshot_group(uuid);
-	}
-	
-	private void ANALYSIS_CREATE_ACTIVITY_NODE_TYPE(CalicoPacket p){
-		p.rewind();
-		p.getInt();
-		long new_uuid=p.getLong();
-		long cuuid=p.getLong();
-		int x=p.getInt();
-		int y=p.getInt();
+		long guuid=p.getLong();
 		String type_name=p.getString();
 		
-		if(type_name.equals(InitialNode.class.getName())){
-			ADMenuController.create_initial_node(new_uuid,cuuid,x,y);
-		}
-		else if(type_name.equals(FinalNode.class.getName())){
-			ADMenuController.create_final_node(new_uuid,cuuid,x,y);
-		}
+		ADMenuController.remove_tag(guuid, type_name);		
 		
+		if (c != null) {
+			ClientManager.send_except(c, p);
+		}
 	}
 
 }

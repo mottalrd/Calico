@@ -10,4 +10,18 @@ package calico.components.tags;
  */
 public abstract class Tag {
 	
+	public static Tag makeNewInstance(String tagClassName){
+		Tag newTag=null;;
+		try {
+			newTag = (Tag)Class.forName(tagClassName).newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return newTag;
+	}
+	
 }

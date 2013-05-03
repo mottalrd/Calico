@@ -1,6 +1,8 @@
 package calico.plugins.analysis.components.tags;
 
 
-public class NETTag extends PerformanceTag{
+public class RunTag extends TagWithImage{
+
+
 	
 }
