@@ -29,42 +29,46 @@ package calico.networking;
 
 import it.unimi.dsi.Util;
 import it.unimi.dsi.fastutil.longs.Long2ReferenceArrayMap;
-import it.unimi.dsi.fastutil.longs.LongIterator;
 
-import java.io.*;
-import java.nio.*;
-import java.net.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 
-import calico.components.*;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
+
+import calico.Calico;
+import calico.CalicoDataStore;
+import calico.components.CCanvas;
+import calico.components.CSession;
 import calico.components.arrow.AnchorPoint;
-import calico.components.composable.Composable;
 import calico.components.composable.ComposableElement;
 import calico.components.composable.ComposableElementController;
-import calico.components.grid.*;
-import calico.components.menus.buttons.UndoButton;
+import calico.components.grid.CGrid;
 import calico.components.tags.Tag;
-import calico.controllers.*;
+import calico.controllers.CArrowController;
+import calico.controllers.CCanvasController;
+import calico.controllers.CConnectorController;
+import calico.controllers.CGroupController;
+import calico.controllers.CGroupDecoratorController;
+import calico.controllers.CImageController;
+import calico.controllers.CStrokeController;
 import calico.events.CalicoEventHandler;
-import calico.inputhandlers.*;
-import calico.modules.*;
-import calico.networking.netstuff.*;
+import calico.modules.ErrorMessage;
+import calico.modules.MessageObject;
+import calico.networking.netstuff.ByteUtils;
+import calico.networking.netstuff.CalicoPacket;
+import calico.networking.netstuff.NetworkCommand;
 import calico.perspectives.CalicoPerspective;
 import calico.perspectives.GridPerspective;
 import calico.plugins.CalicoPluginManager;
 import calico.plugins.events.CalicoEvent;
-import calico.*;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import java.util.concurrent.*;
-
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-import javax.swing.ProgressMonitor;
-
-import org.apache.log4j.Logger;
 
 
 /**
@@ -727,17 +731,9 @@ public class PacketHandler
 	}
 	
 	private static void addTags(HashSet<String> tags, long uuid){
-		for(String t: tags)
-			try {
-				Tag tag=(Tag)Class.forName(t).newInstance();
-				CGroupController.groupdb.get(uuid).addTag(tag);
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		for(String t: tags){
+			CGroupController.groupdb.get(uuid).addTag(Tag.makeNewInstance(t, uuid));
+		}
 	}
 	
 	private static void CANVASVIEW_SCRAP_LOAD(CalicoPacket p)

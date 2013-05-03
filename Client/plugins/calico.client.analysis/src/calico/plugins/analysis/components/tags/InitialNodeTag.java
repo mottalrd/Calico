@@ -9,8 +9,12 @@ import calico.plugins.analysis.utils.ActivityShape;
 
 public class InitialNodeTag extends NodeTypeTag{
 
-	@Override
-	public void create() {
+	public InitialNodeTag(long guuid) {
+		super(guuid);
+		this.applyNewShapeToGroup();
+	}
+
+	public void applyNewShapeToGroup() {
 		//TODO[mottalrd][improvement] move this stuff to a CGroupController method
 		
 		//Get the Group

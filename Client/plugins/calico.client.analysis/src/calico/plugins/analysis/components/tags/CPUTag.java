@@ -7,7 +7,8 @@ import edu.umd.cs.piccolo.nodes.PImage;
 
 public class CPUTag extends PerformanceTag{
 
-	public CPUTag(){
+	public CPUTag(long guuid){
+		super(guuid);
 		Image img=CalicoIconManager.getIconImage("tags.buttons.cpu");
 		this.iconImage=new PImage();
 		this.iconImage.setImage(img);

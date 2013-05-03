@@ -11,7 +11,9 @@ public class RunTag extends TagWithImage{
 	private static int RUN_TAG_IMAGE_WIDTH=49;
 	private static int RUN_TAG_IMAGE_HEIGHT=36;
 
-	public RunTag(){
+	public RunTag(long guuid){
+		super(guuid);
+		
 		Image img=CalicoIconManager.getIconImage("tags.buttons.run_tag");
 		this.iconImage=new PImage();
 		this.iconImage.setImage(img);

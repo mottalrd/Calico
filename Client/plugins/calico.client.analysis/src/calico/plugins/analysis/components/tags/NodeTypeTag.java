@@ -8,6 +8,10 @@ import calico.plugins.analysis.utils.ActivityShape;
 
 public abstract class NodeTypeTag extends AbstractTag{
 
+	public NodeTypeTag(long guuid) {
+		super(guuid);
+	}
+
 	@Override
 	public void groupMoved(long uuid) {
 		//Nothing to do
@@ -29,12 +33,17 @@ public abstract class NodeTypeTag extends AbstractTag{
 	}
 	
 	@Override
+	public void show() {
+		//Nothing to do
+	}
+	
+	@Override
 	public void move() {
 		//Nothing to do
 	}
 
 	@Override
-	public void delete() {
+	public void hide() {
 		//Nothing to do
 	}
 	

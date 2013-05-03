@@ -8,7 +8,8 @@ import calico.plugins.analysis.AnalysisPlugin;
 
 public abstract class PerformanceTag extends TagWithImage{
 
-	public PerformanceTag(){
+	public PerformanceTag(long guuid){
+		super(guuid);
 		this.iconWidth=CalicoOptions.menu.icon_size;
 		this.iconHeight=CalicoOptions.menu.icon_size;
 		this.xShift=0;
@@ -17,8 +18,7 @@ public abstract class PerformanceTag extends TagWithImage{
 	
 	@Override
 	public void groupDeleted(long uuid) {
-		// TODO Auto-generated method stub
-		
+		//nothing to do
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public abstract class PerformanceTag extends TagWithImage{
 
 	@Override
 	public void groupHasLostAConnector(long uuid) {
-		// TODO Auto-generated method stub
+		// nothing to do
 		
 	}
 

@@ -183,11 +183,11 @@ public class CGroup extends PPath implements Serializable {
 	 * @param newInstance
 	 */
 	public void addTag(Tag tag) {
-		tag.setGUUID(this.uuid);
 		this.tags.add(tag);
-		//perform tag creation operations 
-		//(display the icon, or whatever)
-		tag.create();
+		
+		//show the tag
+		tag.show();
+		
 		CGroupController.addListener(tag);
 	}
 	
@@ -196,8 +196,8 @@ public class CGroup extends PPath implements Serializable {
 	 * @param tag
 	 */
 	public void removeTag(Tag tag) {
-		//Hide the tag from screen
-		tag.delete();
+		//Hide the tag
+		tag.hide();
 		
 		//Remove the tag from my list
 		this.tags.remove(tag);

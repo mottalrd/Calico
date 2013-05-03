@@ -24,7 +24,9 @@ public class ForkDecisionTag extends TagWithImage{
 	
 	private boolean isDecision;
 	
-	public ForkDecisionTag(){
+	public ForkDecisionTag(long guuid){
+		super(guuid);
+		
 		this.iconImage=this.getDecisionImage();
 		this.isDecision=true;
 		
@@ -48,25 +50,24 @@ public class ForkDecisionTag extends TagWithImage{
 	}
 	
 	@Override
-	public void create(){
+	public void show(){
 		CGroup group=CGroupController.groupdb.get(this.guuid);
 		PBounds bounds=group.getBounds();
 		this.xShift=bounds.width-MENU_DECISION_FORK_WIDTH;
 		this.yShift=bounds.height-MENU_DECISION_FORK_HEIGHT;
 		
-		super.create();
+		super.show();
 		CalicoInputManager.addCustomInputHandler(this.guuid, new TagInputHandler(this.guuid, this));
 	}
 	
 	@Override
 	public void groupDeleted(long uuid) {
-		// TODO Auto-generated method stub
-		
+		// nothing to do
 	}
 
 	@Override
 	public void groupHasNewConnector(long uuid) {
-		// TODO Auto-generated method stub
+		// nothing to do
 		
 	}
 
@@ -74,8 +75,7 @@ public class ForkDecisionTag extends TagWithImage{
 	public void groupHasLostAConnector(long uuid) {
 		CGroup group=CGroupController.groupdb.get(this.guuid);
 		if(uuid==this.guuid &&  group.getIncomingPaths().size()<2){
-			//TODO[mottalrd] add REMOVE TAG command
-			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_ADD_TAG ,guuid, ForkDecisionTag.class.getName());
+			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG ,guuid, ForkDecisionTag.class.getName());
 		}
 	}
 

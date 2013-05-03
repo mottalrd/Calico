@@ -9,6 +9,10 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 public abstract class TagWithImage extends AbstractTag{
 
+	public TagWithImage(long guuid) {
+		super(guuid);
+	}
+
 	/** The image representing the tag **/
 	protected PImage iconImage;
 	
@@ -26,7 +30,7 @@ public abstract class TagWithImage extends AbstractTag{
 	}
 
 	@Override
-	public void create() {
+	public void show() {
 		this.addIconImage();
 	}
 
@@ -38,8 +42,7 @@ public abstract class TagWithImage extends AbstractTag{
 	}
 
 	@Override
-	public void delete() {
-		//TODO[mottalrd][bug] (1) tag element (2) delete tag (3) exit client and enter again => tag is back
+	public void hide() {
 		CalicoDraw.removeNodeFromParent(iconImage);
 		iconImage.repaint();
 	}
@@ -52,12 +55,16 @@ public abstract class TagWithImage extends AbstractTag{
 	 * Show the image on the assigned position
 	 */
 	protected void addIconImage(){
-		CGroup group=CGroupController.groupdb.get(this.guuid);
-		
-		PBounds bounds=group.getBounds();
-		iconImage.setBounds(bounds.x+xShift,bounds.y+yShift,this.iconWidth,this.iconHeight);
-		iconImage.repaint();
-		CalicoDraw.addChildToNode(CCanvasController.canvasdb.get(CCanvasController.getCurrentUUID()).getLayer(), iconImage);
+		//Check if there is a canvas where we can append
+		if(CCanvasController.canvasdb.get(CCanvasController.getCurrentUUID())!=null){
+			CGroup group=CGroupController.groupdb.get(this.guuid);
+			
+			PBounds bounds=group.getBounds();
+			iconImage.setBounds(bounds.x+xShift,bounds.y+yShift,this.iconWidth,this.iconHeight);
+			iconImage.repaint();
+			
+			CalicoDraw.addChildToNode(CCanvasController.canvasdb.get(CCanvasController.getCurrentUUID()).getLayer(), iconImage);
+		}
 	}
 	
 	/**

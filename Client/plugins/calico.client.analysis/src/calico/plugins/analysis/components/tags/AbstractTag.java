@@ -4,6 +4,10 @@ import calico.components.tags.Tag;
 
 public abstract class AbstractTag extends Tag{
 
+	public AbstractTag(long guuid) {
+		super(guuid);
+	}
+
 	public boolean equals(Object o){
 		if(!(o instanceof AbstractTag)) return false;
 		AbstractTag tag=(AbstractTag) o;

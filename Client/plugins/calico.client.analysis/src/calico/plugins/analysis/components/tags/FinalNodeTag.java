@@ -7,11 +7,17 @@ import calico.components.CGroup;
 import calico.controllers.CGroupController;
 import calico.plugins.analysis.utils.ActivityShape;
 
-//TODO[mottalrd] clean
 public class FinalNodeTag extends NodeTypeTag{
 
-	@Override
-	public void create() {
+	//TODO[mottalrd][bug] loss of sync when using initial/final node tags
+	
+	public FinalNodeTag(long guuid) {
+		super(guuid);
+		
+		this.applyNewShapeToGroup();
+	}
+
+	private void applyNewShapeToGroup() {
 		//TODO[mottalrd][improvement] move this stuff to a CGroupController method
 		
 		//Get the Group

@@ -43,7 +43,7 @@ public class AbstractTagButton extends CanvasMenuButton {
 				return;
 			}
 			
-			Tag check=Tag.makeNewInstance(this.tagClassName);
+			Tag check=Tag.makeNewInstance(this.tagClassName, guuid);
 			if(!CGroupController.groupdb.get(guuid).getTags().contains(check)){
 				//If the group DOES NOT have the tag, add it
 				AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_ADD_TAG ,guuid, this.tagClassName);

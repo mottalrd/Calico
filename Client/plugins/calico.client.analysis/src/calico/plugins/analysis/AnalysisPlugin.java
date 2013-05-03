@@ -3,7 +3,10 @@ package calico.plugins.analysis;
 import org.apache.log4j.Logger;
 
 import calico.CalicoOptions;
+import calico.components.CGroup;
 import calico.components.menus.CanvasStatusBar;
+import calico.components.tags.Tag;
+import calico.controllers.CGroupController;
 import calico.events.CalicoEventHandler;
 import calico.events.CalicoEventListener;
 import calico.networking.Networking;
@@ -149,21 +152,19 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 	
 	//TODO[mottalrd] Probability +/- buttons
 	//TODO[mottalrd] Attach the analysis procedure
-	//TODO[mottalrd] Fix server side of the plugin
 	
 	private void VIEWING_SINGLE_CANVAS(CalicoPacket p) {
 		p.rewind();
 		p.getInt();
 		long cuid = p.getLong();
 		
-		//If you have to do some actions
-		//when the canvas is opened do it here (using one of your controllers)
-		
-		//[mottalrd] Nothing to do.
-		
-		//CGroup.registerPieMenuButton(ServiceTimeBubbleButton.class);
-		//CGroup.registerPieMenuButton(RunAnalysisBubbleButton.class);
-		//example: MenuController.getInstance().showMenu(cuid);
+		//Show all the tags
+		for(long key: CGroupController.groupdb.keySet()){
+			CGroup group=CGroupController.groupdb.get(key);
+			for(Tag tag: group.getTags()){
+				tag.show();
+			}
+		}
 	}
 
 }

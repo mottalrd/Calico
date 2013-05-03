@@ -7,7 +7,8 @@ import edu.umd.cs.piccolo.nodes.PImage;
 
 public class NETTag extends PerformanceTag{
 	
-	public NETTag(){
+	public NETTag(long guuid){
+		super(guuid);
 		Image img=CalicoIconManager.getIconImage("tags.buttons.net");
 		this.iconImage=new PImage();
 		this.iconImage.setImage(img);

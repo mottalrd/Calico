@@ -7,7 +7,8 @@ import edu.umd.cs.piccolo.nodes.PImage;
 
 public class RAMTag extends PerformanceTag{
 
-	public RAMTag(){
+	public RAMTag(long guuid){
+		super(guuid);
 		Image img=CalicoIconManager.getIconImage("tags.buttons.ram");
 		this.iconImage=new PImage();
 		this.iconImage.setImage(img);
