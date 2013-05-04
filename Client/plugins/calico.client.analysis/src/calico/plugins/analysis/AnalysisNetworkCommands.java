@@ -11,5 +11,5 @@ public class AnalysisNetworkCommands {
 	/** TAG COMMANDS **/
 	public static final int ANALYSIS_ADD_TAG = 7802;
 	public static final int ANALYSIS_REMOVE_TAG = 7803;
-
+	public static final int ANALYSIS_RUN_ANALYSIS = 7804;
 }

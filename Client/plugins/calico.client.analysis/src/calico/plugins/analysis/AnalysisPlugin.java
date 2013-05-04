@@ -21,6 +21,7 @@ import calico.plugins.analysis.components.buttons.InitialNodeTagButton;
 import calico.plugins.analysis.components.buttons.NETTagButton;
 import calico.plugins.analysis.components.buttons.RAMTagButton;
 import calico.plugins.analysis.components.buttons.RunTagButton;
+import calico.plugins.analysis.controllers.ADAnalysisController;
 import calico.plugins.analysis.controllers.ADMenuController;
 
 /*
@@ -60,6 +61,9 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 				break;
 			case AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG:
 				ANALYSIS_REMOVE_TAG(p);
+				break;	
+			case AnalysisNetworkCommands.ANALYSIS_RUN_ANALYSIS:
+				this.ANALYSIS_RUN_ANALYSIS(p);
 				break;				
 		}
 	}
@@ -165,6 +169,15 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 				tag.show();
 			}
 		}
+	}
+	
+	private void ANALYSIS_RUN_ANALYSIS(CalicoPacket p){
+		p.rewind();
+		p.getInt();
+		long uuid=p.getLong();
+		double distance=p.getDouble();
+		
+		ADAnalysisController.runAnalysis(uuid, distance);
 	}
 
 }

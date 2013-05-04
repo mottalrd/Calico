@@ -35,6 +35,14 @@ public class ForkDecisionTag extends TagWithImage{
 		
 	}
 	
+	public boolean isFork(){
+		return !isDecision;
+	}
+	
+	public boolean isDecision(){
+		return isDecision;
+	}
+	
 	private PImage getDecisionImage(){
 		Image img=CalicoIconManager.getIconImage(DECISION_IMAGE_NAME);
 		PImage iconImage=new PImage();
@@ -57,6 +65,8 @@ public class ForkDecisionTag extends TagWithImage{
 		this.yShift=bounds.height-MENU_DECISION_FORK_HEIGHT;
 		
 		super.show();
+		
+		//TODO[mottalrd][improvement] why not in the constructor?
 		CalicoInputManager.addCustomInputHandler(this.guuid, new TagInputHandler(this.guuid, this));
 	}
 	

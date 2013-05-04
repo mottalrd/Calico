@@ -15,6 +15,10 @@ public abstract class Tag implements Listener{
 		this.guuid=guuid;
 	}
 	
+	public long getGUUID(){
+		return guuid;
+	}
+	
 	public abstract void groupMoved(long uuid);
 	
 	public abstract void groupDeleted(long uuid);

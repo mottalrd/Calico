@@ -27,6 +27,7 @@ public class Solver {
 	public String MODEL_FILE="out_prism_model.sm";
 	public String PROPERTY_FILE="out_prism_properties.props";
 	public String RESULT_FILE="out_prism_results.txt";
+	public String PRISM_EXECUTABLE="/usr/local/prism/bin/prism";
 	
 	ArrayList<Result> prism_results=new ArrayList<Result>();
 	
@@ -48,7 +49,7 @@ public class Solver {
 		writeToOutputFile(PROPERTY_FILE, convertPropertyMapToStream(prism_properties));
 	
 		//ISSUE THE COMMAND
-		String command="prism "+MODEL_FILE+" "+PROPERTY_FILE+" -exportresults "+ RESULT_FILE + " -fixdl";
+		String command=PRISM_EXECUTABLE +" "+MODEL_FILE+" "+PROPERTY_FILE+" -exportresults "+ RESULT_FILE + " -fixdl";
 		try {
 			//Process ls_proc = Runtime.getRuntime().exec(command);
 			SysCommandExecutor cmdExecutor = new SysCommandExecutor(); 		

@@ -34,13 +34,5 @@ public class Main {
 		Solver solver=new Solver();
 		solver.solve(prismModelStream, props);
 	}
-	
-	public static void main(String args[]) throws Exception{
-		//Load the model and send it to the translator
-		Model m=ModelDecorator.getModel("/home/motta/Desktop/Calico/CalicoSoft/calico.analysis.formal/test/model.uml");
-		ActivityDecorator actdec=new ActivityDecorator(new ModelDecorator(m).getAllActivities().iterator().next());
-		
-		new Main().solve(m, actdec.getNodes().iterator().next(),10d);
-	}
 		
 }

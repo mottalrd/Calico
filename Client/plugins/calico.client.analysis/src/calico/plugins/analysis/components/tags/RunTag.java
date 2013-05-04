@@ -2,7 +2,9 @@ package calico.plugins.analysis.components.tags;
 
 import java.awt.Image;
 
+import calico.inputhandlers.CalicoInputManager;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
+import calico.plugins.analysis.inputhandlers.RunInputHandler;
 import edu.umd.cs.piccolo.nodes.PImage;
 
 public class RunTag extends TagWithImage{
@@ -22,26 +24,31 @@ public class RunTag extends TagWithImage{
 		this.iconHeight=RUN_TAG_IMAGE_HEIGHT;
 		
 		this.xShift=0;
-		this.yShift=(-1)*RUN_TAG_IMAGE_HEIGHT;
+		//this.yShift=(-1)*RUN_TAG_IMAGE_HEIGHT;
+		//TODO[mottalrd][improvement] can't stay out of CGroup for input handling
+		this.yShift=0;
 
 	}
 
 	@Override
+	public void show(){
+		super.show();
+		CalicoInputManager.addCustomInputHandler(this.guuid, new RunInputHandler(this.guuid, this));
+	}
+	
+	@Override
 	public void groupDeleted(long uuid) {
-		// TODO Auto-generated method stub
-		
+		//TODO[mottalrd][bug] deleting a group must hide the tag
 	}
 
 	@Override
 	public void groupHasNewConnector(long uuid) {
-		// TODO Auto-generated method stub
-		
+		//nothing to do
 	}
 
 	@Override
 	public void groupHasLostAConnector(long uuid) {
-		// TODO Auto-generated method stub
-		
+		//nothing to do
 	}
 	
 }

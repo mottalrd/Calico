@@ -5,14 +5,17 @@ import calico.components.CGroup;
 import calico.controllers.CGroupController;
 import calico.plugins.analysis.AnalysisNetworkCommands;
 import calico.plugins.analysis.AnalysisPlugin;
+import edu.umd.cs.piccolo.util.PBounds;
 
 public abstract class PerformanceTag extends TagWithImage{
 
 	public PerformanceTag(long guuid){
 		super(guuid);
+		CGroup group=CGroupController.groupdb.get(this.guuid);
+		PBounds bounds=group.getBounds();
 		this.iconWidth=CalicoOptions.menu.icon_size;
 		this.iconHeight=CalicoOptions.menu.icon_size;
-		this.xShift=0;
+		this.xShift=bounds.width-CalicoOptions.menu.icon_size;
 		this.yShift=0;
 	}
 	
