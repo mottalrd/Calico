@@ -1,34 +1,18 @@
 package calico.plugins.analysis.components.tags;
 
-import java.awt.Polygon;
-
-import calico.CalicoDraw;
 import calico.components.CGroup;
 import calico.controllers.CGroupController;
-import calico.plugins.analysis.utils.ActivityShape;
+import calico.plugins.analysis.AnalysisNetworkCommands;
+import calico.plugins.analysis.AnalysisPlugin;
 
 public class InitialNodeTag extends NodeTypeTag{
 
 	public InitialNodeTag(long guuid) {
 		super(guuid);
-		this.applyNewShapeToGroup();
+		CGroup group=CGroupController.groupdb.get(guuid);
+		AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_DRAW_INITIAL_NODE, this.guuid, group.getX(), group.getY());
 	}
 
-	public void applyNewShapeToGroup() {
-		//TODO[mottalrd][improvement] move this stuff to a CGroupController method
-		
-		//Get the Group
-		CGroup group=CGroupController.groupdb.get(this.guuid);
-
-		//Reset the points and set the new ones
-		group.resetPoints();
-		Polygon p = get_group_shape(ActivityShape.INITIALNODE, (int)group.getX(), (int)group.getY());
-		create_custom_shape(this.guuid, p);
-		
-		//Repaint
-		CalicoDraw.setNodePaintInvalid(group, true);
-		CalicoDraw.repaint(group);
-	}
 
 
 }

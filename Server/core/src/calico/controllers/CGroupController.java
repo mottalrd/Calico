@@ -1438,16 +1438,6 @@ public class CGroupController
 		CGroupController.groups.get(uuid).setPermanent(isperm);
 		//CCanvasController.canvasdb.get(cuid).repaint();
 	}	
-
-	//Add the points defined in p to the scrap with id uuid
-	public static void create_custom_shape(long uuid, Polygon p){
-		for (int i = 0; i < p.npoints; i++)
-		{
-			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
-			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
-			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
-		}
-	}
 	
 	public static void add_tag(Tag tag, long uuid) {
 		CGroupController.groups.get(uuid).addTag(tag);
@@ -1455,6 +1445,23 @@ public class CGroupController
 	
 	public static void remove_tag(Tag tag, long guuid) {
 		CGroupController.groups.get(guuid).removeTag(tag);
+	}
+
+	public static void no_notify_apply_new_shape(long uuid, Polygon p){
+		CGroup group=CGroupController.groups.get(uuid);
+		group.resetPoints();
+		
+		create_custom_shape(uuid, p);
+	}
+
+	//Add the points defined in p to the scrap with id uuid
+	private static void create_custom_shape(long uuid, Polygon p){
+		for (int i = 0; i < p.npoints; i++)
+		{
+			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
+			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
+			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);
+		}
 	}
 	
 }

@@ -66,7 +66,6 @@ import calico.components.composable.ComposableElementController;
 import calico.components.decorators.CGroupDecorator;
 import calico.components.piemenu.PieMenu;
 import calico.components.piemenu.PieMenuButton;
-import calico.components.tags.Tag;
 import calico.inputhandlers.CalicoInputManager;
 import calico.networking.Networking;
 import calico.networking.PacketHandler;
@@ -2017,9 +2016,20 @@ public class CGroupController
 		CGroupController.groupdb.get(uuid).drawPermTemp(true);
 		//CCanvasController.canvasdb.get(cuid).repaint();
 	}	
+	
+	
+	public static void no_notify_apply_new_shape(long uuid, Polygon p){
+		CGroup group=CGroupController.groupdb.get(uuid);
+		group.resetPoints();
+		
+		create_custom_shape(uuid, p);
+		
+		CalicoDraw.setNodePaintInvalid(group, true);
+		CalicoDraw.repaint(group);
+	}
 
 	//Add the points defined in p to the scrap with id uuid
-	public static void create_custom_shape(long uuid, Polygon p){
+	private static void create_custom_shape(long uuid, Polygon p){
 		for (int i = 0; i < p.npoints; i++)
 		{
 			CGroupController.no_notify_append(uuid, p.xpoints[i], p.ypoints[i]);

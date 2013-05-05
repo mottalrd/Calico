@@ -1,5 +1,7 @@
 package calico.plugins.analysis;
 
+import java.awt.Polygon;
+
 import org.apache.log4j.Logger;
 
 import calico.CalicoOptions;
@@ -23,6 +25,7 @@ import calico.plugins.analysis.components.buttons.RAMTagButton;
 import calico.plugins.analysis.components.buttons.RunTagButton;
 import calico.plugins.analysis.controllers.ADAnalysisController;
 import calico.plugins.analysis.controllers.ADMenuController;
+import calico.plugins.analysis.utils.ActivityShape;
 
 /*
  * The entry point to load the plugin and the main logic is here
@@ -64,7 +67,13 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 				break;	
 			case AnalysisNetworkCommands.ANALYSIS_RUN_ANALYSIS:
 				this.ANALYSIS_RUN_ANALYSIS(p);
-				break;				
+				break;	
+			case AnalysisNetworkCommands.ANALYSIS_DRAW_INITIAL_NODE:
+				this.ANALYSIS_DRAW_INITIAL_NODE(p);
+				break;
+			case AnalysisNetworkCommands.ANALYSIS_DRAW_FINAL_NODE:
+				this.ANALYSIS_DRAW_FINAL_NODE(p);
+				break;
 		}
 	}
 
@@ -179,5 +188,31 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		
 		ADAnalysisController.runAnalysis(uuid, distance);
 	}
+	
+	private void ANALYSIS_DRAW_FINAL_NODE(CalicoPacket p) {
+		p.rewind();
+		p.getInt();
+		long uuid=p.getLong();
+		double x= p.getDouble();
+		double y= p.getDouble();
+		
+		Polygon poly=ActivityShape.FINALNODE.getShape((int)x,(int)y);
+		
+		CGroupController.no_notify_apply_new_shape(uuid, poly);
+	}
+
+	private void ANALYSIS_DRAW_INITIAL_NODE(CalicoPacket p) {
+		p.rewind();
+		p.getInt();
+		long uuid=p.getLong();
+		double x= p.getDouble();
+		double y= p.getDouble();
+		
+		Polygon poly=ActivityShape.INITIALNODE.getShape((int)x,(int)y);
+		
+		CGroupController.no_notify_apply_new_shape(uuid, poly);
+	}
+	
+
 
 }

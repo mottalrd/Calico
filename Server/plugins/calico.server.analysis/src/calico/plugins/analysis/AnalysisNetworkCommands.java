@@ -12,4 +12,6 @@ public class AnalysisNetworkCommands {
 	public static final int ANALYSIS_ADD_TAG = 7802;
 	public static final int ANALYSIS_REMOVE_TAG = 7803;
 
+	public static final int ANALYSIS_DRAW_INITIAL_NODE = 7805;
+	public static final int ANALYSIS_DRAW_FINAL_NODE = 7806;
 }

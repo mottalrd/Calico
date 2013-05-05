@@ -13,6 +13,17 @@ import java.lang.reflect.InvocationTargetException;
  */
 public abstract class Tag {
 	
+	/** The group id this tag belongs to **/
+	protected long guuid;
+	
+	public Tag(long guuid){
+		this.guuid=guuid;
+	}
+	
+	public long getGUUID(){
+		return guuid;
+	}
+	
 	public static Tag makeNewInstance(String tagClassName, long guuid){
 		Tag newTag=null;
 		

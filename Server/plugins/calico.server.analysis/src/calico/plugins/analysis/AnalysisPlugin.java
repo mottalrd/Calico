@@ -2,18 +2,22 @@ package calico.plugins.analysis;
 
 import it.unimi.dsi.fastutil.longs.LongSet;
 
+import java.awt.Polygon;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
 import calico.clients.Client;
 import calico.clients.ClientManager;
+import calico.components.CGroup;
 import calico.controllers.CCanvasController;
+import calico.controllers.CGroupController;
 import calico.events.CalicoEventHandler;
 import calico.events.CalicoEventListener;
 import calico.networking.netstuff.CalicoPacket;
 import calico.plugins.AbstractCalicoPlugin;
 import calico.plugins.analysis.controllers.ADMenuController;
+import calico.plugins.analysis.utils.ActivityShape;
 
 
 /*
@@ -50,7 +54,13 @@ public class AnalysisPlugin extends AbstractCalicoPlugin implements CalicoEventL
 				break;
 			case AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG:
 				ANALYSIS_REMOVE_TAG(p,c);
-				break;				
+				break;		
+			case AnalysisNetworkCommands.ANALYSIS_DRAW_INITIAL_NODE:
+				this.ANALYSIS_DRAW_INITIAL_NODE(p,c);
+				break;
+			case AnalysisNetworkCommands.ANALYSIS_DRAW_FINAL_NODE:
+				this.ANALYSIS_DRAW_FINAL_NODE(p,c);
+				break;
 		}
 	}
 
@@ -128,6 +138,38 @@ public class AnalysisPlugin extends AbstractCalicoPlugin implements CalicoEventL
 		String type_name=p.getString();
 		
 		ADMenuController.remove_tag(guuid, type_name);		
+		
+		if (c != null) {
+			ClientManager.send_except(c, p);
+		}
+	}
+	
+	private void ANALYSIS_DRAW_FINAL_NODE(CalicoPacket p, Client c) {
+		p.rewind();
+		p.getInt();
+		long uuid=p.getLong();
+		double x= p.getDouble();
+		double y= p.getDouble();
+		
+		Polygon poly=ActivityShape.FINALNODE.getShape((int)x,(int)y);
+		
+		CGroupController.no_notify_apply_new_shape(uuid, poly);
+		
+		if (c != null) {
+			ClientManager.send_except(c, p);
+		}
+	}
+
+	private void ANALYSIS_DRAW_INITIAL_NODE(CalicoPacket p, Client c) {
+		p.rewind();
+		p.getInt();
+		long uuid=p.getLong();
+		double x= p.getDouble();
+		double y= p.getDouble();
+		
+		Polygon poly=ActivityShape.INITIALNODE.getShape((int)x,(int)y);
+		
+		CGroupController.no_notify_apply_new_shape(uuid, poly);
 		
 		if (c != null) {
 			ClientManager.send_except(c, p);

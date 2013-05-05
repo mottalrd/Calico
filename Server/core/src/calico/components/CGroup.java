@@ -185,6 +185,10 @@ public class CGroup {
 		this.points.addPoint(x, y);
 	}
 	
+	public void resetPoints(){
+		this.points.reset();
+	}
+	
 	public void append(int[] x, int[] y)
 	{
 		for (int i = 0; i < x.length; i++)
