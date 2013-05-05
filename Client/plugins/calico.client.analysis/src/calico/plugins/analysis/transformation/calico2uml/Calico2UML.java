@@ -177,7 +177,7 @@ public class Calico2UML {
 		
 		if(controlFlow.getIncomingNode().isDecision()){
 			Comment c=newcf.createOwnedComment();
-			//TODO[mottalrd] implement me
+			//TODO[mottalrd] implement probability
 			c.setBody("Probability: "+0.5);
 		}
 		

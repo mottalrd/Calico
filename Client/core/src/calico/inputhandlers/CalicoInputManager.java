@@ -180,11 +180,14 @@ public class CalicoInputManager
 	
 	public static void addCustomInputHandler(long uuid, CalicoAbstractInputHandler handler)
 	{
-		//TODO[mottalrd][question] why if we want a custom one we go out if it already exist?
-//		if (inputHandlers.containsKey(uuid))
-//		{
-//			return;
-//		}
+		//TODO[mottalrd][improvement] each group can have only one custom input handler!?
+		//!(inputHandlers.get(uuid).getClass().isAssignableFrom(handler.getClass())
+		//  => handler is a subclass of inputHandlers.get(uuid).getClass()
+		//     i.e. I am redefining the handler
+		if (inputHandlers.containsKey(uuid) && !(inputHandlers.get(uuid).getClass().isAssignableFrom(handler.getClass())))
+		{
+			return;
+		}
 		inputHandlers.put(uuid, handler);
 	}
 	

@@ -11,6 +11,7 @@ import calico.components.tags.Tag;
 import calico.controllers.CGroupController;
 import calico.events.CalicoEventHandler;
 import calico.events.CalicoEventListener;
+import calico.inputhandlers.CalicoInputManager;
 import calico.networking.Networking;
 import calico.networking.PacketHandler;
 import calico.networking.netstuff.CalicoPacket;
@@ -25,6 +26,7 @@ import calico.plugins.analysis.components.buttons.RAMTagButton;
 import calico.plugins.analysis.components.buttons.RunTagButton;
 import calico.plugins.analysis.controllers.ADAnalysisController;
 import calico.plugins.analysis.controllers.ADMenuController;
+import calico.plugins.analysis.inputhandlers.AnalysisInputHandler;
 import calico.plugins.analysis.utils.ActivityShape;
 
 /*
@@ -164,7 +166,6 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 	}
 	
 	//TODO[mottalrd] Probability +/- buttons
-	//TODO[mottalrd] Attach the analysis procedure
 	
 	private void VIEWING_SINGLE_CANVAS(CalicoPacket p) {
 		p.rewind();
@@ -212,7 +213,5 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		
 		CGroupController.no_notify_apply_new_shape(uuid, poly);
 	}
-	
-
 
 }

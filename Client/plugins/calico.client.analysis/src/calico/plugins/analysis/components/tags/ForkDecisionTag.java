@@ -8,7 +8,7 @@ import calico.inputhandlers.CalicoInputManager;
 import calico.plugins.analysis.AnalysisNetworkCommands;
 import calico.plugins.analysis.AnalysisPlugin;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
-import calico.plugins.analysis.inputhandlers.TagInputHandler;
+import calico.plugins.analysis.inputhandlers.AnalysisInputHandler;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -33,6 +33,7 @@ public class ForkDecisionTag extends TagWithImage{
 		this.iconWidth=MENU_DECISION_FORK_WIDTH;
 		this.iconHeight=MENU_DECISION_FORK_HEIGHT;
 		
+		CalicoInputManager.addCustomInputHandler(guuid, new AnalysisInputHandler(guuid));
 	}
 	
 	public boolean isFork(){
@@ -65,9 +66,6 @@ public class ForkDecisionTag extends TagWithImage{
 		this.yShift=bounds.height-MENU_DECISION_FORK_HEIGHT;
 		
 		super.show();
-		
-		//TODO[mottalrd][improvement] why not in the constructor?
-		CalicoInputManager.addCustomInputHandler(this.guuid, new TagInputHandler(this.guuid, this));
 	}
 	
 	@Override

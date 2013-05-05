@@ -56,8 +56,6 @@ public class CActivityNode {
 		for(Tag tag:group.getTags()){
 			if(tag instanceof ForkDecisionTag && ((ForkDecisionTag)tag).isFork()){
 				return true;
-			}else{
-				return false; //we can't have more then one
 			}
 		}
 		return false;
@@ -68,8 +66,6 @@ public class CActivityNode {
 		for(Tag tag:group.getTags()){
 			if(tag instanceof ForkDecisionTag && ((ForkDecisionTag)tag).isDecision()){
 				return true;
-			}else{
-				return false; //we can't have more then one
 			}
 		}
 		return false;
