@@ -7,9 +7,11 @@ import org.apache.log4j.Logger;
 
 import calico.CalicoOptions;
 import calico.CalicoUtils;
+import calico.components.CConnector;
 import calico.components.CGroup;
 import calico.components.menus.CanvasStatusBar;
 import calico.components.tags.Tag;
+import calico.controllers.CConnectorController;
 import calico.controllers.CGroupController;
 import calico.events.CalicoEventHandler;
 import calico.events.CalicoEventListener;
@@ -28,7 +30,7 @@ import calico.plugins.analysis.components.buttons.RAMTagButton;
 import calico.plugins.analysis.components.buttons.RunTagButton;
 import calico.plugins.analysis.controllers.ADAnalysisController;
 import calico.plugins.analysis.controllers.ADMenuController;
-import calico.plugins.analysis.inputhandlers.AnalysisInputHandler;
+import calico.plugins.analysis.inputhandlers.AnalysisGroupInputHandler;
 import calico.plugins.analysis.utils.ActivityShape;
 import calico.utils.Geometry;
 
@@ -168,7 +170,6 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		ADMenuController.remove_tag(guuid, type_name);		
 	}
 	
-	//TODO[mottalrd] Probability +/- buttons
 	//TODO[mottalrd] Run distance selector
 	
 	private void VIEWING_SINGLE_CANVAS(CalicoPacket p) {
@@ -176,6 +177,21 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		p.getInt();
 		long cuid = p.getLong();
 		
+		this.showGroupTags();
+		this.showConnectorTags();
+		
+	}
+	
+	private void showConnectorTags() {
+		for(long key: CConnectorController.connectors.keySet()){
+			CConnector connector=CConnectorController.connectors.get(key);
+			for(Tag tag: connector.getTags()){
+				tag.show();
+			}
+		}
+	}
+
+	private void showGroupTags() {
 		//Show all the tags
 		for(long key: CGroupController.groupdb.keySet()){
 			CGroup group=CGroupController.groupdb.get(key);
@@ -184,7 +200,7 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 			}
 		}
 	}
-	
+
 	private void ANALYSIS_RUN_ANALYSIS(CalicoPacket p){
 		p.rewind();
 		p.getInt();

@@ -2,13 +2,14 @@ package calico.plugins.analysis.components.tags;
 
 import java.awt.Image;
 
+import calico.components.CConnector;
 import calico.components.CGroup;
 import calico.controllers.CGroupController;
 import calico.inputhandlers.CalicoInputManager;
 import calico.plugins.analysis.AnalysisNetworkCommands;
 import calico.plugins.analysis.AnalysisPlugin;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
-import calico.plugins.analysis.inputhandlers.AnalysisInputHandler;
+import calico.plugins.analysis.inputhandlers.AnalysisGroupInputHandler;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
 
@@ -33,7 +34,7 @@ public class ForkDecisionTag extends TagWithImage{
 		this.iconWidth=MENU_DECISION_FORK_WIDTH;
 		this.iconHeight=MENU_DECISION_FORK_HEIGHT;
 		
-		CalicoInputManager.addCustomInputHandler(guuid, new AnalysisInputHandler(guuid));
+		CalicoInputManager.addCustomInputHandler(guuid, new AnalysisGroupInputHandler(guuid));
 	}
 	
 	public boolean isFork(){
@@ -84,6 +85,13 @@ public class ForkDecisionTag extends TagWithImage{
 		CGroup group=CGroupController.groupdb.get(this.guuid);
 		if(uuid==this.guuid &&  group.getOutgoingPaths().size()<2){
 			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG ,guuid, ForkDecisionTag.class.getName());
+			this.removeProbabilityTagsFromConnectors(group);
+		}
+	}
+
+	private void removeProbabilityTagsFromConnectors(CGroup group) {
+		for(CConnector connector: group.getOutgoingPaths()){
+			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG ,connector.getUUID(), ProbabilityTag.class.getName());
 		}
 	}
 
@@ -91,6 +99,7 @@ public class ForkDecisionTag extends TagWithImage{
 		if(this.isDecision==true) {
 			this.removeIconImage();
 			
+			this.removeProbabilityTagsFromConnectors(CGroupController.groupdb.get(this.guuid));
 			iconImage=this.getForkImage();
 			this.isDecision=false;
 		}

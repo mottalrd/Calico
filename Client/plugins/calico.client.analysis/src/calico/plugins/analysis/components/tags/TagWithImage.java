@@ -7,7 +7,7 @@ import calico.controllers.CGroupController;
 import edu.umd.cs.piccolo.nodes.PImage;
 import edu.umd.cs.piccolo.util.PBounds;
 
-public abstract class TagWithImage extends AbstractTag{
+public abstract class TagWithImage extends AbstractTag implements GroupTag{
 
 	public TagWithImage(long guuid) {
 		super(guuid);

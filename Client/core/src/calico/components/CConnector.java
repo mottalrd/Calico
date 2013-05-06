@@ -54,6 +54,7 @@ import calico.components.composable.connectors.HighlightElement;
 import calico.components.tags.Tag;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
+import calico.controllers.CConnectorController.ConnectorListener;
 import calico.controllers.CGroupController;
 import calico.networking.netstuff.ByteUtils;
 import calico.networking.netstuff.CalicoPacket;
@@ -191,12 +192,14 @@ public class CConnector extends PComposite implements Composable{
 	public void addTag(Tag tag) {
 		this.tags.add(tag);
 		
-		//TODO[mottalrd] add tag to connector
-		
 		//show the tag
-		//tag.show();
+		tag.show();
 		
-		//CGroupController.addListener(tag);
+		//add to listeners
+		if(tag instanceof ConnectorListener){
+			CConnectorController.addListener((ConnectorListener)tag);
+		}
+		
 	}
 	
 	/**
@@ -207,13 +210,13 @@ public class CConnector extends PComposite implements Composable{
 		//Remove the tag from my list
 		this.tags.remove(tag);
 		
-		//TODO[mottalrd] add tag to connector
-		
 		//Hide the tag
-		//tag.hide();
+		tag.hide();
 		
-		//Remove the tag from the listener list
-		//CGroupController.removeListener(tag);
+		//remove from listeners
+		if(tag instanceof ConnectorListener){
+			CConnectorController.removeListener((ConnectorListener)tag);
+		}
 	}
 	
 	/**

@@ -35,6 +35,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.List;
 
 import it.unimi.dsi.fastutil.longs.Long2ReferenceAVLTreeMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -56,6 +57,7 @@ import calico.components.composable.connectors.HighlightElement;
 import calico.components.composable.connectors.LabelElement;
 import calico.components.composable.connectors.LineStyleElement;
 import calico.components.piemenu.PieMenuButton;
+import calico.controllers.CGroupController.Listener;
 import calico.networking.Networking;
 import calico.networking.PacketHandler;
 import calico.networking.netstuff.CalicoPacket;
@@ -71,6 +73,35 @@ public class CConnectorController {
 	 * This is the database of all the connectors
 	 */
 	public static Long2ReferenceAVLTreeMap<CConnector> connectors = new Long2ReferenceAVLTreeMap<CConnector>();
+	
+	private static List<ConnectorListener> listeners = new ArrayList<ConnectorListener>();
+
+	public static interface ConnectorListener
+	{
+
+		void connectorMoved(long uuid);
+		
+		//TODO[mottalrd][improvement] add more to connector listener interface
+	}
+	
+	public static void addListener(ConnectorListener listener)
+	{
+		listeners.add(listener);
+	}
+	
+	public static void removeListener(ConnectorListener listener)
+	{
+		listeners.remove(listener);
+	}
+	
+	private static void informListenersOfMove(long uuid)
+	{
+		ArrayList<ConnectorListener> copyOfListeners=new ArrayList<ConnectorListener>(listeners);
+		for (ConnectorListener listener : copyOfListeners)
+		{
+			listener.connectorMoved(uuid);
+		}
+	}
 	
 	public static void setup()
 	{
@@ -245,6 +276,8 @@ public class CConnectorController {
 			return;
 		
 		connectors.get(uuid).moveAnchor(guuid, x, y);
+		informListenersOfMove(uuid);
+		
 		if (BubbleMenu.isBubbleMenuActive() && BubbleMenu.activeUUID == uuid)
 		{
 			BubbleMenu.moveIconPositions(CConnectorController.connectors.get(uuid).getBounds());

@@ -11,11 +11,11 @@ import calico.plugins.analysis.components.tags.ForkDecisionTag;
 import calico.plugins.analysis.components.tags.RunTag;
 import calico.plugins.analysis.components.tags.TagWithImage;
 
-public class AnalysisInputHandler extends CGroupInputHandler{
+public class AnalysisGroupInputHandler extends CGroupInputHandler{
 
 	private long guuid;
 
-	public AnalysisInputHandler(long uuid) {
+	public AnalysisGroupInputHandler(long uuid) {
 		super(uuid);
 		this.guuid=uuid;
 	}

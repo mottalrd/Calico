@@ -3,11 +3,9 @@ package calico.components.tags;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-import calico.controllers.CGroupController.Listener;
 
-
-public abstract class Tag implements Listener{
-
+public abstract class Tag{
+	
 	/** The group id this tag belongs to **/
 	protected long guuid;
 	
@@ -18,14 +16,6 @@ public abstract class Tag implements Listener{
 	public long getGUUID(){
 		return guuid;
 	}
-	
-	public abstract void groupMoved(long uuid);
-	
-	public abstract void groupDeleted(long uuid);
-	
-	public abstract void groupHasNewConnector(long uuid);
-	
-	public abstract void groupHasLostAConnector(long uuid);
 	
 	public abstract void show();
 	

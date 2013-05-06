@@ -3,7 +3,10 @@ package calico.plugins.analysis.controllers;
 import java.util.List;
 
 import calico.components.tags.Tag;
+import calico.controllers.CConnectorController;
 import calico.controllers.CGroupController;
+import calico.plugins.analysis.components.tags.ConnectorTag;
+import calico.plugins.analysis.components.tags.GroupTag;
 
 /**
  * The Activity Diagram Menu Controller is in charge of managing the actions related to 
@@ -49,29 +52,39 @@ public class ADMenuController {
 		//First get the tag type we want to add to this scrap
 		Tag tag=Tag.makeNewInstance(tag_type, guuid);
 		
-		if(!CGroupController.groupdb.get(guuid).getTags().contains(tag)){
-			//Add the tag to the scrap
-			CGroupController.groupdb.get(guuid).addTag(tag);
-		}else{
-			//The scrap has already this tag, nothing to do
+		if(tag instanceof GroupTag){
+			if(!CGroupController.groupdb.get(guuid).getTags().contains(tag)){
+				//Add the tag to the scrap
+				CGroupController.groupdb.get(guuid).addTag(tag);
+			}
+		}else if(tag instanceof ConnectorTag){
+			if(!CConnectorController.connectors.get(guuid).getTags().contains(tag)){
+				//Add the tag to the connector
+				CConnectorController.connectors.get(guuid).addTag(tag);
+			}
 		}
-		
 	}
 	
 	public static void no_notify_remove_tag(long guuid, String tag_type){
 		//First get the tag type we want to add to this scrap
 		Tag tag=Tag.makeNewInstance(tag_type, guuid);
 		
-		//If the tag is already in there, remove it
-		if(CGroupController.groupdb.get(guuid).getTags().contains(tag)){
-			//Remove the tag from the scrap
-			List<Tag> tags=CGroupController.groupdb.get(guuid).getTags();
-			Tag alreadyInTag=tags.get(tags.indexOf(tag));
-			CGroupController.groupdb.get(guuid).removeTag(alreadyInTag);
-		}else{
-			//The tag is not in, nothing to do
+		if(tag instanceof GroupTag){
+			//If the tag is already in there, remove it
+			if(CGroupController.groupdb.get(guuid).getTags().contains(tag)){
+				//Remove the tag from the scrap
+				List<Tag> tags=CGroupController.groupdb.get(guuid).getTags();
+				Tag alreadyInTag=tags.get(tags.indexOf(tag));
+				CGroupController.groupdb.get(guuid).removeTag(alreadyInTag);
+			}			
+		}else if(tag instanceof ConnectorTag){
+			//If the tag is already in there, remove it
+			if(CConnectorController.connectors.get(guuid).getTags().contains(tag)){
+				//Remove the tag from the scrap
+				List<Tag> tags=CConnectorController.connectors.get(guuid).getTags();
+				Tag alreadyInTag=tags.get(tags.indexOf(tag));
+				CConnectorController.connectors.get(guuid).removeTag(alreadyInTag);
+			}	
 		}
-		
 	}	
-
 }

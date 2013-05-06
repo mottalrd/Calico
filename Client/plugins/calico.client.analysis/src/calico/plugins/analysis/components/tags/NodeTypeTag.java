@@ -3,7 +3,7 @@ package calico.plugins.analysis.components.tags;
 import calico.controllers.CGroupController;
 
 
-public abstract class NodeTypeTag extends AbstractTag{
+public abstract class NodeTypeTag extends AbstractTag implements GroupTag{
 
 	public NodeTypeTag(long guuid) {
 		super(guuid);

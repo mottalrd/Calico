@@ -96,6 +96,7 @@ public class CGroupController
 	
 	private static List<Listener> listeners = new ArrayList<Listener>();
 
+	//TODO[mottalrd][improvement] what about renaming to GroupListener?
 	public static interface Listener
 	{
 		void groupMoved(long uuid);
@@ -132,6 +133,15 @@ public class CGroupController
 		for (Listener listener : copyOfListeners)
 		{
 			listener.groupMoved(uuid);
+		}
+	}
+	
+	private static void informListenersOfDelete(long uuid)
+	{
+		ArrayList<Listener> copyOfListeners=new ArrayList<Listener>(listeners);
+		for (Listener listener : copyOfListeners)
+		{
+			listener.groupDeleted(uuid);
 		}
 	}
 	
@@ -434,10 +444,7 @@ public class CGroupController
 				dq_add(uuid);
 			}
 			
-			for (Listener listener : listeners)
-			{
-				listener.groupDeleted(uuid);
-			}
+			CGroupController.informListenersOfDelete(uuid);
 		}
 		
 		if (BubbleMenu.isBubbleMenuActive() && BubbleMenu.activeUUID == uuid)

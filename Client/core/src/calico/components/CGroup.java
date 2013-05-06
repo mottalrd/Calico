@@ -86,6 +86,7 @@ import calico.controllers.CArrowController;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
 import calico.controllers.CGroupController;
+import calico.controllers.CGroupController.Listener;
 import calico.controllers.CStrokeController;
 import calico.inputhandlers.CalicoInputManager;
 import calico.networking.Networking;
@@ -188,7 +189,10 @@ public class CGroup extends PPath implements Serializable {
 		//show the tag
 		tag.show();
 		
-		CGroupController.addListener(tag);
+		if(tag instanceof Listener){
+			CGroupController.addListener((Listener)tag);
+		}
+		
 	}
 	
 	/**
@@ -203,7 +207,9 @@ public class CGroup extends PPath implements Serializable {
 		this.tags.remove(tag);
 		
 		//Remove the tag from the listener list
-		CGroupController.removeListener(tag);
+		if(tag instanceof Listener){
+			CGroupController.removeListener((Listener)tag);
+		}
 	}
 	
 	public static void registerPieMenuButton(Class<?> button)

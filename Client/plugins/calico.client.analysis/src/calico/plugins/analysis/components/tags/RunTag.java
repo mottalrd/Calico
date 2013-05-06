@@ -4,7 +4,7 @@ import java.awt.Image;
 
 import calico.inputhandlers.CalicoInputManager;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
-import calico.plugins.analysis.inputhandlers.AnalysisInputHandler;
+import calico.plugins.analysis.inputhandlers.AnalysisGroupInputHandler;
 import edu.umd.cs.piccolo.nodes.PImage;
 
 public class RunTag extends TagWithImage{
@@ -28,7 +28,7 @@ public class RunTag extends TagWithImage{
 		//TODO[mottalrd][improvement] can't stay out of CGroup for input handling
 		this.yShift=0;
 
-		CalicoInputManager.addCustomInputHandler(guuid, new AnalysisInputHandler(guuid));
+		CalicoInputManager.addCustomInputHandler(guuid, new AnalysisGroupInputHandler(guuid));
 	}
 
 	@Override
