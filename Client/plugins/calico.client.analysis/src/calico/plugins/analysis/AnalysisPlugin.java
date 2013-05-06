@@ -172,6 +172,8 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		ADMenuController.remove_tag(guuid, type_name);		
 	}
 	
+	//TODO[mottalrd] put the run button out of the groups => change the handler
+	//TODO[mottalrd] change size of +/- buttons and run button
 	//TODO[mottalrd][bug] playing with +/- buttons may bring to negative values for probability which broke the analysis
 	//TODO[mottalrd][bug] playing with adding removing connectors may create icons not deleted properly
 	//TODO[mottalrd][bug] opacity and other stuff moves in front of the tag icons
