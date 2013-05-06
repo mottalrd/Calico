@@ -20,11 +20,6 @@ public abstract class PerformanceTag extends TagWithImage{
 	}
 	
 	@Override
-	public void groupDeleted(long uuid) {
-		//nothing to do
-	}
-
-	@Override
 	public void groupHasNewConnector(long uuid) {
 		if(uuid==this.guuid){
 			//check if we need to show the decision/fork menu
@@ -34,11 +29,15 @@ public abstract class PerformanceTag extends TagWithImage{
 			}
 		}
 	}
-
-	@Override
-	public void groupHasLostAConnector(long uuid) {
-		// nothing to do
+	
+	@Override 
+	public void move(){
+		CGroup group=CGroupController.groupdb.get(this.guuid);
+		PBounds bounds=group.getBounds();
+		this.xShift=bounds.width-CalicoOptions.menu.icon_size;
+		this.yShift=0;
 		
+		super.move();
 	}
 
 }

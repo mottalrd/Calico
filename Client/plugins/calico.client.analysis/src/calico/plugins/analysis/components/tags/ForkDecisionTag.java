@@ -69,15 +69,15 @@ public class ForkDecisionTag extends TagWithImage{
 	}
 	
 	@Override
-	public void groupDeleted(long uuid) {
-		// nothing to do
+	public void move() {
+		CGroup group=CGroupController.groupdb.get(this.guuid);
+		PBounds bounds=group.getBounds();
+		this.xShift=bounds.width-MENU_DECISION_FORK_WIDTH;
+		this.yShift=bounds.height-MENU_DECISION_FORK_HEIGHT;
+		
+		super.move();
 	}
 
-	@Override
-	public void groupHasNewConnector(long uuid) {
-		// nothing to do
-		
-	}
 
 	@Override
 	public void groupHasLostAConnector(long uuid) {

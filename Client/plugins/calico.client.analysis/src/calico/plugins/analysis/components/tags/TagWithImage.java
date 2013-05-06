@@ -25,9 +25,29 @@ public abstract class TagWithImage extends AbstractTag{
 	protected double iconHeight;
 	
 	@Override
+	public void groupHasNewConnector(long uuid) {
+		//nothing to do
+	}
+
+	@Override
+	public void groupHasLostAConnector(long uuid) {
+		//nothing to do
+	}
+	
+	@Override
 	public void groupMoved(long uuid) {
 		if(uuid==this.guuid) this.move();
 	}
+	
+	@Override
+	public void groupDeleted(long uuid) {
+		if(uuid==this.guuid){
+			this.hide();
+			CGroupController.removeListener(this);
+		}
+	}
+	
+	
 
 	@Override
 	public void show() {

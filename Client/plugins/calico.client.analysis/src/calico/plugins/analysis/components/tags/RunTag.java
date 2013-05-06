@@ -36,19 +36,4 @@ public class RunTag extends TagWithImage{
 		super.show();
 	}
 	
-	@Override
-	public void groupDeleted(long uuid) {
-		//TODO[mottalrd][bug] deleting a group must hide the tag
-	}
-
-	@Override
-	public void groupHasNewConnector(long uuid) {
-		//nothing to do
-	}
-
-	@Override
-	public void groupHasLostAConnector(long uuid) {
-		//nothing to do
-	}
-	
 }

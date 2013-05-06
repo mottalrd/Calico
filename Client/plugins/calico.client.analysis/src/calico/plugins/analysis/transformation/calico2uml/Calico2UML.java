@@ -12,6 +12,7 @@ import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.ControlFlow;
 import org.eclipse.uml2.uml.DecisionNode;
+import org.eclipse.uml2.uml.FinalNode;
 import org.eclipse.uml2.uml.ForkNode;
 import org.eclipse.uml2.uml.InitialNode;
 import org.eclipse.uml2.uml.JoinNode;
@@ -56,9 +57,6 @@ public class Calico2UML {
         CActivityNode initialNode=CalicoModelHelper.getInitialNode();
         //Go visit it, this should add all the nodes starting from it
         visit(initialNode);
-        
-        //Add the connectors
-        createControlFlows();
 
         return model;
 	}
@@ -71,51 +69,79 @@ public class Calico2UML {
 		return model;
 	}
 	
-	private void createControlFlows() {
-		for(CControlFlow cf: CalicoModelHelper.getControlFlows()){
-			this.addControlFlow(cf);
-		}
-	}
 
-	private void visit(CActivityNode node) {
+	private ActivityNode visit(CActivityNode node) {
 		//If you are not know I am done with this path
-		if(visited.contains(node.getUUID())) return;
+		if(visited.contains(node.getUUID())){
+			ActivityNode temp=this.traceabilitymap.get(node.getUUID());
+			
+			//TODO[mottalrd][improvement] this is a crazy fix due to the fact that we do not have a direct mapping between calico nodes and uml nodes
+			ActivityNode source=temp.getIncomings().iterator().next().getSource();
+			if(source instanceof MergeNode) return source;
+			if(source instanceof JoinNode) return source;
+			return temp;
+		}
 		
 		//Otherwise let-s check who you are
 		if(node.isInitialNode()){
 			visited.add(node.getUUID());
-			this.addInitialNode(node);
-			this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());
+			ActivityNode thisNode=this.addInitialNode(node);
+			ActivityNode nextNode=this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());
+			this.addControlFlow(thisNode, nextNode);
+			return thisNode;
 		}
 		else if(node.isFinalNode()){
 			visited.add(node.getUUID());
-			this.addFinalNode(node);
+			FinalNode thisNode=this.addFinalNode(node);
 			//no further visit is needed
+			return thisNode;
 		}
 		else if(node.isActivityNode()){ //has a performance tag
 			if(!node.isDecision() && !node.isFork() && !node.isMerge(this.brackets) && !node.isJoin(this.brackets)){
 				//I have only one outgoing node
 				visited.add(node.getUUID());
-				this.addActivityNode(node);
-				this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());
+				ActivityNode thisNode=this.addActivityNode(node);
+				ActivityNode nextNode=this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());
+				this.addControlFlow(thisNode, nextNode);
+				return thisNode;
 			}else if(node.isDecision()){ 
 				brackets.push(BracketType.DECISION);
 				visited.add(node.getUUID());
-				this.addDecisionNode(node);
-				for(CControlFlow cf: node.getOutgoingConnectors()) this.visit(cf.getOutgoingNode());
+				ActivityNode thisNode=this.addActivityNode(node);
+				ActivityNode intermediateNode=this.addDecisionNode();
+				this.addControlFlow(thisNode, intermediateNode);
+				for(CControlFlow cf: node.getOutgoingConnectors()){
+					ActivityNode nextNode=this.visit(cf.getOutgoingNode());
+					this.addControlFlowWithProbability(intermediateNode, nextNode);
+				}
+				return thisNode;
 			}else if(node.isFork()){
 				brackets.push(BracketType.FORK);
 				visited.add(node.getUUID());
-				this.addForkNode(node);
-				for(CControlFlow cf: node.getOutgoingConnectors()) this.visit(cf.getOutgoingNode());
+				ActivityNode thisNode=this.addActivityNode(node);
+				ActivityNode intermediateNode=this.addForkNode();
+				this.addControlFlow(thisNode, intermediateNode);
+				for(CControlFlow cf: node.getOutgoingConnectors()){
+					ActivityNode nextNode=this.visit(cf.getOutgoingNode());
+					this.addControlFlow(intermediateNode, nextNode);
+				}
+				return thisNode;
 			}else if(node.isMerge(this.brackets)){
 				visited.add(node.getUUID());
-				this.addMergeNode(node);
-				this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());
+				ActivityNode thisNode=this.addMergeNode();
+				ActivityNode intermediateNode=this.addActivityNode(node);
+				this.addControlFlow(thisNode, intermediateNode);	
+				ActivityNode nextNode=this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());
+				this.addControlFlow(intermediateNode, nextNode);	
+				return thisNode;
 			}else if(node.isJoin(this.brackets)){
 				visited.add(node.getUUID());
-				this.addJoinNode(node);
-				this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());				
+				ActivityNode thisNode=this.addJoinNode();
+				ActivityNode intermediateNode=this.addActivityNode(node);
+				this.addControlFlow(thisNode, intermediateNode);	
+				ActivityNode nextNode=this.visit(node.getOutgoingConnectors().iterator().next().getOutgoingNode());		
+				this.addControlFlow(intermediateNode, nextNode);	
+				return thisNode;
 			}else{
 				try{throw new Exception("Node type not recognized");}
 				catch(Exception e){e.printStackTrace();}
@@ -124,39 +150,45 @@ public class Calico2UML {
 			try{throw new Exception("Node type not recognized");}
 			catch(Exception e){e.printStackTrace();}
 		}
+		
+		try{throw new Exception("Something went wrong");}
+		catch(Exception e){e.printStackTrace();}
+		return null;
 	}	
 
-	private void addMergeNode(CActivityNode node) {
+	private MergeNode addMergeNode() {
 		MergeNode newmerge=UMLFactory.eINSTANCE.createMergeNode();
 		activity.getNodes().add(newmerge);
-		traceabilitymap.put(node.getUUID(), newmerge);
+		return newmerge;
 	}
 
-	private void addForkNode(CActivityNode forkNode) {
+	private ForkNode addForkNode() {
 		ForkNode newdec=UMLFactory.eINSTANCE.createForkNode();
 		activity.getNodes().add(newdec);
-		traceabilitymap.put(forkNode.getUUID(), newdec);
+		return newdec;
 	}
 	
-	private void addJoinNode(CActivityNode joinNode) {
+	private JoinNode addJoinNode() {
 		JoinNode newdec=UMLFactory.eINSTANCE.createJoinNode();
 		activity.getNodes().add(newdec);
-		traceabilitymap.put(joinNode.getUUID(), newdec);
+		return newdec;
 	}
 
-	private void addFinalNode(CActivityNode finalNode) {
+	private FinalNode addFinalNode(CActivityNode finalNode) {
 		ActivityFinalNode newfinal=UMLFactory.eINSTANCE.createActivityFinalNode();
 		activity.getNodes().add(newfinal);
 		traceabilitymap.put(finalNode.getUUID(), newfinal);
+		return newfinal;
 	}
 
-	private void addInitialNode(CActivityNode initialNode){
+	private InitialNode addInitialNode(CActivityNode initialNode){
 		InitialNode initialNode_=UMLFactory.eINSTANCE.createInitialNode();
 		activity.getNodes().add(initialNode_);
 		traceabilitymap.put(initialNode.getUUID(), initialNode_);
+		return initialNode_;
 	}
 	
-	private void addActivityNode(CActivityNode activityNode){
+	private Action addActivityNode(CActivityNode activityNode){
 		Action newaction=UMLFactory.eINSTANCE.createOpaqueAction();
 		
 		Comment c=newaction.createOwnedComment();
@@ -164,26 +196,30 @@ public class Calico2UML {
 		
 		activity.getNodes().add(newaction);
 		traceabilitymap.put(activityNode.getUUID(), newaction);
+		return newaction;
 	}
 	
-	private void addDecisionNode(CActivityNode decisionNode){
+	private DecisionNode addDecisionNode(){
 		DecisionNode newdec=UMLFactory.eINSTANCE.createDecisionNode();
 		activity.getNodes().add(newdec);
-		traceabilitymap.put(decisionNode.getUUID(), newdec);
+		return newdec;
 	}	
 	
-	private void addControlFlow(CControlFlow controlFlow){
+	private void addControlFlowWithProbability(ActivityNode source, ActivityNode target){
+		ControlFlow cf=this.addControlFlow(source, target);
+		Comment c=cf.createOwnedComment();
+		//TODO[mottalrd] implement probability
+		c.setBody("Probability: "+0.5);
+	}
+	
+	private ControlFlow addControlFlow(ActivityNode source, ActivityNode target){
 		ControlFlow newcf=UMLFactory.eINSTANCE.createControlFlow();
 		
-		if(controlFlow.getIncomingNode().isDecision()){
-			Comment c=newcf.createOwnedComment();
-			//TODO[mottalrd] implement probability
-			c.setBody("Probability: "+0.5);
-		}
-		
-		newcf.setSource(traceabilitymap.get(controlFlow.getIncomingNode().getUUID()));
-		newcf.setTarget(traceabilitymap.get(controlFlow.getOutgoingNode().getUUID()));
+		newcf.setSource(source);
+		newcf.setTarget(target);
 		activity.getEdges().add(newcf);
+		
+		return newcf;
 	}
 	
 }

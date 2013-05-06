@@ -3,6 +3,7 @@ package calico.plugins.analysis;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
 import java.awt.Polygon;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
@@ -18,6 +19,7 @@ import calico.networking.netstuff.CalicoPacket;
 import calico.plugins.AbstractCalicoPlugin;
 import calico.plugins.analysis.controllers.ADMenuController;
 import calico.plugins.analysis.utils.ActivityShape;
+import calico.utils.Geometry;
 
 
 /*
@@ -151,7 +153,9 @@ public class AnalysisPlugin extends AbstractCalicoPlugin implements CalicoEventL
 		double x= p.getDouble();
 		double y= p.getDouble();
 		
-		Polygon poly=ActivityShape.FINALNODE.getShape((int)x,(int)y);
+		Ellipse2D elip = new Ellipse2D.Double(x, y, 40, 40);
+		Polygon poly=Geometry.getPolyFromPath(elip.getPathIterator(null));
+		//Polygon poly=ActivityShape.FINALNODE.getShape((int)x,(int)y);
 		
 		CGroupController.no_notify_apply_new_shape(uuid, poly);
 		
@@ -167,7 +171,9 @@ public class AnalysisPlugin extends AbstractCalicoPlugin implements CalicoEventL
 		double x= p.getDouble();
 		double y= p.getDouble();
 		
-		Polygon poly=ActivityShape.INITIALNODE.getShape((int)x,(int)y);
+		Ellipse2D elip = new Ellipse2D.Double(x, y, 40, 40);
+		Polygon poly=Geometry.getPolyFromPath(elip.getPathIterator(null));
+		//Polygon poly=ActivityShape.INITIALNODE.getShape((int)x,(int)y);
 		
 		CGroupController.no_notify_apply_new_shape(uuid, poly);
 		

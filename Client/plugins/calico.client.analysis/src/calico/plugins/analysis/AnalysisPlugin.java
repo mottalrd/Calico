@@ -1,10 +1,12 @@
 package calico.plugins.analysis;
 
 import java.awt.Polygon;
+import java.awt.geom.Ellipse2D;
 
 import org.apache.log4j.Logger;
 
 import calico.CalicoOptions;
+import calico.CalicoUtils;
 import calico.components.CGroup;
 import calico.components.menus.CanvasStatusBar;
 import calico.components.tags.Tag;
@@ -28,6 +30,7 @@ import calico.plugins.analysis.controllers.ADAnalysisController;
 import calico.plugins.analysis.controllers.ADMenuController;
 import calico.plugins.analysis.inputhandlers.AnalysisInputHandler;
 import calico.plugins.analysis.utils.ActivityShape;
+import calico.utils.Geometry;
 
 /*
  * The entry point to load the plugin and the main logic is here
@@ -197,7 +200,10 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		double x= p.getDouble();
 		double y= p.getDouble();
 		
-		Polygon poly=ActivityShape.FINALNODE.getShape((int)x,(int)y);
+		Ellipse2D elip = new Ellipse2D.Double(x, y, 40, 40);
+		Polygon poly=Geometry.getPolyFromPath(elip.getPathIterator(null));
+		//The old way
+		//Polygon poly=ActivityShape.INITIALNODE.getShape((int)x,(int)y);
 		
 		CGroupController.no_notify_apply_new_shape(uuid, poly);
 	}
@@ -209,7 +215,10 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		double x= p.getDouble();
 		double y= p.getDouble();
 		
-		Polygon poly=ActivityShape.INITIALNODE.getShape((int)x,(int)y);
+		Ellipse2D elip = new Ellipse2D.Double(x, y, 40, 40);
+		Polygon poly=Geometry.getPolyFromPath(elip.getPathIterator(null));
+		//The old way
+		//Polygon poly=ActivityShape.INITIALNODE.getShape((int)x,(int)y);
 		
 		CGroupController.no_notify_apply_new_shape(uuid, poly);
 	}
