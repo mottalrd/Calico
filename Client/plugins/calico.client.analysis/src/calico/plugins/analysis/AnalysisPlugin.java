@@ -169,6 +169,7 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 	}
 	
 	//TODO[mottalrd] Probability +/- buttons
+	//TODO[mottalrd] Run distance selector
 	
 	private void VIEWING_SINGLE_CANVAS(CalicoPacket p) {
 		p.rewind();
