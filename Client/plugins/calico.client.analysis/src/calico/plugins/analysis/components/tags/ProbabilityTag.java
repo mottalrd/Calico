@@ -167,4 +167,8 @@ public class ProbabilityTag extends AbstractTag implements ConnectorTag{
 		}
 	}
 
+	public double getProbability() {
+		return this.probability;
+	}
+
 }

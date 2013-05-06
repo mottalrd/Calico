@@ -21,11 +21,8 @@ import calico.plugins.analysis.transformation.uml2prism.uml.ModelDecorator;
  * 
  */
 public class ADAnalysisController {
-
-	public static double CURRDISTANCE=500.0;
 	
 	public static void runAnalysis(long target_uuid, double distance) {
-		ADAnalysisController.CURRDISTANCE=distance;
 		Calico2UML translator=new Calico2UML();
 		Model model=translator.translate();
 		

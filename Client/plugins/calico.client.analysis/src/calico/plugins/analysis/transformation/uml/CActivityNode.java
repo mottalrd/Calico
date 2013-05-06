@@ -114,7 +114,16 @@ public class CActivityNode {
 	}
 
 	public double getResponseTime() {
-		// TODO[mottalrd] add response time
-		return 1.0;
+		CGroup group=CGroupController.groupdb.get(this.guuid);
+		for(Tag tag: group.getTags()){
+			if(tag instanceof PerformanceTag){
+				PerformanceTag ptag=(PerformanceTag) tag;
+				ptag.getResponseTime();
+			}
+		}
+		
+		try{throw new Exception("Performance tag not found");}
+		catch(Exception e){e.printStackTrace();}
+		return 1.0f;
 	}
 }

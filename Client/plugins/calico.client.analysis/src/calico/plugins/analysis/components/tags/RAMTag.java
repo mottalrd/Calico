@@ -2,6 +2,7 @@ package calico.plugins.analysis.components.tags;
 
 import java.awt.Image;
 
+import calico.plugins.analysis.AnalysisConfiguration;
 import calico.plugins.analysis.iconsets.CalicoIconManager;
 import edu.umd.cs.piccolo.nodes.PImage;
 
@@ -12,6 +13,8 @@ public class RAMTag extends PerformanceTag{
 		Image img=CalicoIconManager.getIconImage("tags.buttons.ram");
 		this.iconImage=new PImage();
 		this.iconImage.setImage(img);
+		
+		this.time=AnalysisConfiguration.RAM_TIME;
 	}	
 	
 }

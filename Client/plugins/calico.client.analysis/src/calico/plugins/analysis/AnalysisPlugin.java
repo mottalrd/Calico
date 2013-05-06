@@ -23,6 +23,7 @@ import calico.networking.netstuff.NetworkCommand;
 import calico.plugins.CalicoPlugin;
 import calico.plugins.analysis.components.buttons.CPUTagButton;
 import calico.plugins.analysis.components.buttons.DBTagButton;
+import calico.plugins.analysis.components.buttons.DistanceSelectionButton;
 import calico.plugins.analysis.components.buttons.FinalNodeTagButton;
 import calico.plugins.analysis.components.buttons.InitialNodeTagButton;
 import calico.plugins.analysis.components.buttons.NETTagButton;
@@ -106,6 +107,7 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		CanvasStatusBar.addMenuButtonRightAligned(RunTagButton.class);
 		CanvasStatusBar.addMenuButtonRightAligned(InitialNodeTagButton.class);
 		CanvasStatusBar.addMenuButtonRightAligned(FinalNodeTagButton.class);
+		CanvasStatusBar.addMenuButtonRightAligned(DistanceSelectionButton.class);
 		
 		//Register to the events I am interested in 
 		CalicoEventHandler.getInstance().addListener(NetworkCommand.VIEWING_SINGLE_CANVAS, this, CalicoEventHandler.PASSIVE_LISTENER);

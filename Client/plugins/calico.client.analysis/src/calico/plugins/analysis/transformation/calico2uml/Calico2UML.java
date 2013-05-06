@@ -112,7 +112,7 @@ public class Calico2UML {
 				this.addControlFlow(thisNode, intermediateNode);
 				for(CControlFlow cf: node.getOutgoingConnectors()){
 					ActivityNode nextNode=this.visit(cf.getOutgoingNode());
-					this.addControlFlowWithProbability(intermediateNode, nextNode);
+					this.addControlFlowWithProbability(intermediateNode, nextNode, cf);
 				}
 				return thisNode;
 			}else if(node.isFork()){
@@ -205,11 +205,11 @@ public class Calico2UML {
 		return newdec;
 	}	
 	
-	private void addControlFlowWithProbability(ActivityNode source, ActivityNode target){
+	private void addControlFlowWithProbability(ActivityNode source, ActivityNode target, CControlFlow connector){
 		ControlFlow cf=this.addControlFlow(source, target);
 		Comment c=cf.createOwnedComment();
-		//TODO[mottalrd] implement probability
-		c.setBody("Probability: "+0.5);
+		double probability=connector.getProbability();
+		c.setBody("Probability: "+probability);
 	}
 	
 	private ControlFlow addControlFlow(ActivityNode source, ActivityNode target){

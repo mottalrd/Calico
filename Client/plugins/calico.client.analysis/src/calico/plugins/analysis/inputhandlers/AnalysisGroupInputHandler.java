@@ -5,6 +5,7 @@ import calico.components.tags.Tag;
 import calico.controllers.CGroupController;
 import calico.inputhandlers.CGroupInputHandler;
 import calico.inputhandlers.InputEventInfo;
+import calico.plugins.analysis.AnalysisConfiguration;
 import calico.plugins.analysis.AnalysisNetworkCommands;
 import calico.plugins.analysis.AnalysisPlugin;
 import calico.plugins.analysis.components.tags.ForkDecisionTag;
@@ -26,7 +27,7 @@ public class AnalysisGroupInputHandler extends CGroupInputHandler{
 		
 		if((tag=this.getRunTag(group))!=null){
 			if(tag.getIconImageBounds().contains(e.getX(), e.getY())) 
-				AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_RUN_ANALYSIS, this.uuid, (double)50.0);
+				AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_RUN_ANALYSIS, this.uuid, AnalysisConfiguration.TIME_DISTANCE);
 		}
 		if((tag=this.getForkDecisionTag(group))!=null){
 			if(tag.getIconImageBounds().contains(e.getX(), e.getY())) 

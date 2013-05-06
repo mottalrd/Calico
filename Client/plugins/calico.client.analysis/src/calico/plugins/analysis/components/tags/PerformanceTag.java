@@ -10,6 +10,8 @@ import edu.umd.cs.piccolo.util.PBounds;
 
 public abstract class PerformanceTag extends TagWithImage{
 
+	protected float time;
+
 	public PerformanceTag(long guuid){
 		super(guuid);
 		CGroup group=CGroupController.groupdb.get(this.guuid);
@@ -48,6 +50,10 @@ public abstract class PerformanceTag extends TagWithImage{
 		this.yShift=0;
 		
 		super.move();
+	}
+
+	public float getResponseTime() {
+		return this.time;
 	}
 
 }
