@@ -5,6 +5,7 @@ import java.awt.Image;
 import calico.CalicoDraw;
 import calico.CalicoOptions;
 import calico.components.CConnector;
+import calico.components.CGroup;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
 import calico.inputhandlers.CalicoAbstractInputHandler;
@@ -20,6 +21,10 @@ public class ProbabilityTag extends AbstractTag implements ConnectorTag{
 	private int iconHeight;
 	private PImage plusImage;
 	private PImage minusImage;
+	private double probability;
+	
+	private static float BASIC_STROKE_THICKNESS=6.0f;
+	private static float STROKE_THICKNESS_DELTA=1.0f;
 
 	public ProbabilityTag(long guuid) {
 		super(guuid);
@@ -34,6 +39,9 @@ public class ProbabilityTag extends AbstractTag implements ConnectorTag{
 		this.iconWidth=CalicoOptions.menu.icon_size;
 		this.iconHeight=CalicoOptions.menu.icon_size;
 		
+		this.probability=0.5;
+		CConnector connector=CConnectorController.connectors.get(this.guuid);
+		connector.setThickness(BASIC_STROKE_THICKNESS);
 	}
 
 	@Override
@@ -98,12 +106,64 @@ public class ProbabilityTag extends AbstractTag implements ConnectorTag{
 		plusImage.repaint();
 		CalicoDraw.removeNodeFromParent(minusImage);
 		minusImage.repaint();
+		
+		//reset connector thickness
+		CGroup group=CConnectorController.connectors.get(this.guuid).getIncomingGroup();
+		for(CConnector connector: group.getOutgoingPaths()){
+			connector.setThickness(1.0f);
+		}
 	}
 
 	@Override
 	public void connectorMoved(long uuid) {
 		if(uuid==this.guuid){
 			this.move();
+		}
+	}
+
+	public static void updateProbability(ProbabilityTag tag) {
+		CGroup group=CConnectorController.connectors.get(tag.guuid).getIncomingGroup();
+		
+	}
+
+	public void increaseProbability() {
+		//TODO[mottalrd][bug] what happens if I have more than 2 outgoing connectors?
+		//If I have two connectors and I add another one, reset the probabilities
+		
+		CGroup group=CConnectorController.connectors.get(this.guuid).getIncomingGroup();
+		for(CConnector connector: group.getOutgoingPaths()){
+			ProbabilityTag ptag=(ProbabilityTag)connector.getTags().iterator().next();
+			if(ptag.guuid==this.guuid && this.probability<=0.9){
+				//this is the tag I want to increase
+				ptag.probability+=0.1;
+				float newThickness=connector.getThickness()+STROKE_THICKNESS_DELTA;
+				connector.setThickness(newThickness);
+			}
+			else if(ptag.guuid!=this.guuid && ptag.probability>=0.1){
+				//this is the tag I want to decrease
+				ptag.probability-=0.1;
+				float newThickness=connector.getThickness()-STROKE_THICKNESS_DELTA;
+				connector.setThickness(newThickness);
+			}
+		}
+	}
+
+	public void decreaseProbability() {
+		CGroup group=CConnectorController.connectors.get(this.guuid).getIncomingGroup();
+		for(CConnector connector: group.getOutgoingPaths()){
+			ProbabilityTag ptag=(ProbabilityTag)connector.getTags().iterator().next();
+			if(ptag.guuid==this.guuid && this.probability>=0.1){
+				//this is the tag I want to decrease
+				ptag.probability-=0.1;
+				float newThickness=connector.getThickness()-STROKE_THICKNESS_DELTA;
+				connector.setThickness(newThickness);
+			}
+			else if(ptag.guuid!=this.guuid && ptag.probability<=0.9){
+				//this is the tag I want to decrease
+				ptag.probability+=0.1;
+				float newThickness=connector.getThickness()+STROKE_THICKNESS_DELTA;
+				connector.setThickness(newThickness);
+			}
 		}
 	}
 

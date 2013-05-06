@@ -18,15 +18,15 @@ public class AnalysisCanvasInputHandler extends CCanvasInputHandler {
 		for(ProbabilityTag tag: this.tags){
 			this.checkForPlusMinusButtons(tag, e);
 		}
-		
 		super.actionReleased(e);
 	}
 
 	private void checkForPlusMinusButtons(ProbabilityTag tag, InputEventInfo e) {
+		//increase or decrease the probability
 		if(tag.getPlusImageBounds().contains(e.getX(), e.getY())){
-			System.out.println("PLUS");
+			tag.increaseProbability();
 		}else if(tag.getMinusImageBounds().contains(e.getX(), e.getY())){
-			System.out.println("MINUS");
+			tag.decreaseProbability();
 		}
 	}
 

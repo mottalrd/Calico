@@ -94,6 +94,12 @@ public class ForkDecisionTag extends TagWithImage{
 			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG ,connector.getUUID(), ProbabilityTag.class.getName());
 		}
 	}
+	
+	private void addProbabilityTagToConnectors(CGroup group) {
+		for(CConnector c:group.getOutgoingPaths()){
+			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_ADD_TAG, c.getUUID(), ProbabilityTag.class.getName());
+		}
+	}
 
 	public void switchForkDecisionMenu() {
 		if(this.isDecision==true) {
@@ -106,6 +112,7 @@ public class ForkDecisionTag extends TagWithImage{
 		else{
 			this.removeIconImage();
 			
+			this.addProbabilityTagToConnectors(CGroupController.groupdb.get(this.guuid));
 			iconImage=this.getDecisionImage();
 			this.isDecision=true;
 		}

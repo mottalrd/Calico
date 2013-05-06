@@ -495,6 +495,12 @@ public class CConnector extends PComposite implements Composable{
 		return thickness;
 	}
 	
+	public void setThickness(float thickness) {
+		this.thickness=thickness;
+		this.setStroke(new BasicStroke(thickness));
+		this.redraw();
+	}	
+	
 	@Override
 	public PBounds getBounds()
 	{
@@ -810,5 +816,8 @@ public class CConnector extends PComposite implements Composable{
 	 */
 	public CGroup getOutgoingGroup(){
 		return CGroupController.groupdb.get(this.getAnchorUUID(TYPE_HEAD));
-	}	
+	}
+
+
+
 }
