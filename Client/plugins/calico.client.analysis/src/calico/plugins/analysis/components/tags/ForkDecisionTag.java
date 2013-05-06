@@ -82,7 +82,7 @@ public class ForkDecisionTag extends TagWithImage{
 	@Override
 	public void groupHasLostAConnector(long uuid) {
 		CGroup group=CGroupController.groupdb.get(this.guuid);
-		if(uuid==this.guuid &&  group.getIncomingPaths().size()<2){
+		if(uuid==this.guuid &&  group.getOutgoingPaths().size()<2){
 			AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_REMOVE_TAG ,guuid, ForkDecisionTag.class.getName());
 		}
 	}
