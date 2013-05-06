@@ -37,6 +37,7 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -50,6 +51,7 @@ import calico.components.composable.ComposableElement;
 import calico.components.composable.ComposableElementController;
 import calico.components.composable.connectors.ArrowheadElement;
 import calico.components.composable.connectors.HighlightElement;
+import calico.components.tags.Tag;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
 import calico.controllers.CGroupController;
@@ -104,6 +106,7 @@ public class CConnector extends PComposite implements Composable{
 	
 	// This will hold the bubble menu buttons (Class<?>)
 	private static ObjectArrayList<Class<?>> bubbleMenuButtons = new ObjectArrayList<Class<?>>(); 
+	private ObjectArrayList<Tag> tags=new ObjectArrayList<Tag>();
 	
 	public CConnector(long uuid, long cuid, Color color, float thickness, Polygon points)
 	{
@@ -171,6 +174,46 @@ public class CConnector extends PComposite implements Composable{
 
 		resetBounds();
 		redraw();
+	}
+	
+	/** 
+	 * Get the list of tags applied to this CGroup
+	 * @return 
+	 */
+	public List<Tag> getTags(){
+		return tags;
+	}
+	
+	/**
+	 * Adds a tag to this CGroup
+	 * @param newInstance
+	 */
+	public void addTag(Tag tag) {
+		this.tags.add(tag);
+		
+		//TODO[mottalrd] add tag to connector
+		
+		//show the tag
+		//tag.show();
+		
+		//CGroupController.addListener(tag);
+	}
+	
+	/**
+	 * Remove the tag from this CGroup
+	 * @param tag
+	 */
+	public void removeTag(Tag tag) {
+		//Remove the tag from my list
+		this.tags.remove(tag);
+		
+		//TODO[mottalrd] add tag to connector
+		
+		//Hide the tag
+		//tag.hide();
+		
+		//Remove the tag from the listener list
+		//CGroupController.removeListener(tag);
 	}
 	
 	/**
@@ -603,6 +646,9 @@ public class CConnector extends PComposite implements Composable{
 	{			
 		int packetSize = ByteUtils.SIZE_OF_INT + (2 * ByteUtils.SIZE_OF_LONG) + ByteUtils.SIZE_OF_INT + ByteUtils.SIZE_OF_INT
 				+ (ByteUtils.SIZE_OF_INT * 4) + ByteUtils.SIZE_OF_INT + (2 * this.orthogonalDistance.length * ByteUtils.SIZE_OF_LONG) + (2 * ByteUtils.SIZE_OF_LONG);
+		for(Tag tag: this.getTags()){
+			packetSize+=CalicoPacket.getSizeOfString(tag.getClass().getName());
+		}
 		
 		CalicoPacket packet = new CalicoPacket(packetSize);
 
@@ -626,6 +672,9 @@ public class CConnector extends PComposite implements Composable{
 		
 		packet.putLong(anchorHeadUUID);
 		packet.putLong(anchorTailUUID);
+		for(Tag tag: this.getTags()){
+			packet.putString(tag.getClass().getName());
+		}
 		
 		return new CalicoPacket[]{packet};
 

@@ -707,7 +707,7 @@ public class PacketHandler
 		CGroupController.groupdb.get(uuid).setText(text);
 		
 		//add the tags to this group
-		addTags(tags, uuid);
+		addTagsToGroup(tags, uuid);
 		
 		CGroupController.no_notify_finish(uuid, captureChildren, false, false);
 		
@@ -730,9 +730,15 @@ public class PacketHandler
 		return tags;
 	}
 	
-	private static void addTags(HashSet<String> tags, long uuid){
+	private static void addTagsToGroup(HashSet<String> tags, long uuid){
 		for(String t: tags){
 			CGroupController.groupdb.get(uuid).addTag(Tag.makeNewInstance(t, uuid));
+		}
+	}
+	
+	private static void addTagsToConnector(HashSet<String> tags, long uuid){
+		for(String t: tags){
+			CConnectorController.connectors.get(uuid).addTag(Tag.makeNewInstance(t, uuid));
 		}
 	}
 	
@@ -1139,8 +1145,12 @@ public class PacketHandler
 		long anchorHead = p.getLong();
 		long anchorTail = p.getLong();
 		
+		//Get the tags written in the packet
+		HashSet<String> tags=getTagsFromPacket(p);
+		
 		CConnectorController.no_notify_create(uuid, cuid, color, thickness, head, tail, orthogonalDistance, travelDistance, anchorHead, anchorTail);
 		
+		addTagsToConnector(tags, uuid);
 	}
 	
 	public static void CONNECTOR_DELETE(CalicoPacket p)

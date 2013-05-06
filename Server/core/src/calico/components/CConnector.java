@@ -27,6 +27,8 @@
  ******************************************************************************/
 package calico.components;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -34,12 +36,14 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
+import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 
 import calico.components.composable.Composable;
 import calico.components.composable.ComposableElement;
 import calico.components.composable.ComposableElementController;
+import calico.components.tags.Tag;
 import calico.controllers.CCanvasController;
 import calico.controllers.CConnectorController;
 import calico.controllers.CGroupController;
@@ -88,6 +92,7 @@ public class CConnector extends PComposite implements Composable{
 	//Percent along the direct head to tail line (Percentage in decimal format; Can be negative)
 	private double[] travelDistance;
 
+	private ObjectArrayList<Tag> tags=new ObjectArrayList<Tag>();
 	
 	public CConnector(long uuid, long cuid, Color color, float thickness, Point head, Point tail, double[] orthogonalDistance, double[] travelDistance,
 			 long anchorHead, long anchorTail)
@@ -109,6 +114,46 @@ public class CConnector extends PComposite implements Composable{
 		strokePaint = this.color;
 
 		resetBounds();
+	}
+	
+	/** 
+	 * Get the list of tags applied to this CGroup
+	 * @return 
+	 */
+	public List<Tag> getTags(){
+		return tags;
+	}
+	
+	/**
+	 * Adds a tag to this CGroup
+	 * @param newInstance
+	 */
+	public void addTag(Tag tag) {
+		this.tags.add(tag);
+		
+		//TODO[mottalrd] add tag to connector
+		
+		//show the tag
+		//tag.show();
+		
+		//CGroupController.addListener(tag);
+	}
+	
+	/**
+	 * Remove the tag from this CGroup
+	 * @param tag
+	 */
+	public void removeTag(Tag tag) {
+		//Remove the tag from my list
+		this.tags.remove(tag);
+		
+		//TODO[mottalrd] add tag to connector
+		
+		//Hide the tag
+		//tag.hide();
+		
+		//Remove the tag from the listener list
+		//CGroupController.removeListener(tag);
 	}
 	
 	public long getCanvasUUID()
@@ -371,6 +416,9 @@ public class CConnector extends PComposite implements Composable{
 	{			
 		int packetSize = ByteUtils.SIZE_OF_INT + (2 * ByteUtils.SIZE_OF_LONG) + ByteUtils.SIZE_OF_INT + ByteUtils.SIZE_OF_INT
 				+ (ByteUtils.SIZE_OF_INT * 4) + ByteUtils.SIZE_OF_INT + (2 * this.orthogonalDistance.length * ByteUtils.SIZE_OF_LONG) + (2 * ByteUtils.SIZE_OF_LONG);
+		for(Tag tag: this.getTags()){
+			packetSize+=CalicoPacket.getSizeOfString(tag.getClass().getName());
+		}
 		
 		CalicoPacket packet = new CalicoPacket(packetSize);
 
@@ -394,6 +442,9 @@ public class CConnector extends PComposite implements Composable{
 		
 		packet.putLong(anchorHeadUUID);
 		packet.putLong(anchorTailUUID);
+		for(Tag tag: this.getTags()){
+			packet.putString(tag.getClass().getName());
+		}
 		
 		return new CalicoPacket[]{packet};
 
