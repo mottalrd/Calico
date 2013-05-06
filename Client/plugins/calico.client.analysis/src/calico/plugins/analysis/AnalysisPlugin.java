@@ -172,7 +172,9 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		ADMenuController.remove_tag(guuid, type_name);		
 	}
 	
-	//TODO[mottalrd] Run distance selector
+	//TODO[mottalrd][bug] playing with +/- buttons may bring to negative values for probability which broke the analysis
+	//TODO[mottalrd][bug] playing with adding removing connectors may create icons not deleted properly
+	//TODO[mottalrd][bug] opacity and other stuff moves in front of the tag icons
 	
 	private void VIEWING_SINGLE_CANVAS(CalicoPacket p) {
 		p.rewind();

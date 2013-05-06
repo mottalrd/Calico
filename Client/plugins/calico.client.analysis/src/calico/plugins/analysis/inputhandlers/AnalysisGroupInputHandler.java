@@ -26,12 +26,15 @@ public class AnalysisGroupInputHandler extends CGroupInputHandler{
 		TagWithImage tag=null;
 		
 		if((tag=this.getRunTag(group))!=null){
-			if(tag.getIconImageBounds().contains(e.getX(), e.getY())) 
-				AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_RUN_ANALYSIS, this.uuid, AnalysisConfiguration.TIME_DISTANCE);
+			if(tag.getIconImageBounds().contains(e.getX(), e.getY())){
+				double distance= AnalysisConfiguration.TIME_DISTANCE;
+				AnalysisPlugin.UI_send_command(AnalysisNetworkCommands.ANALYSIS_RUN_ANALYSIS, this.uuid, distance);
+			}
 		}
 		if((tag=this.getForkDecisionTag(group))!=null){
-			if(tag.getIconImageBounds().contains(e.getX(), e.getY())) 
+			if(tag.getIconImageBounds().contains(e.getX(), e.getY())){
 				((ForkDecisionTag)tag).switchForkDecisionMenu();
+			}
 		}
 		
 		super.actionReleased(e);

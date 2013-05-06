@@ -118,7 +118,7 @@ public class CActivityNode {
 		for(Tag tag: group.getTags()){
 			if(tag instanceof PerformanceTag){
 				PerformanceTag ptag=(PerformanceTag) tag;
-				ptag.getResponseTime();
+				return ptag.getResponseTime();
 			}
 		}
 		
