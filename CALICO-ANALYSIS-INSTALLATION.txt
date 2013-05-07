@@ -33,16 +33,18 @@ CALICO_HOME
 === Configuration ===
 Open the following file
 CALICO_HOME/Client/plugins/calico.client.analysis/conf/calico.analysis.properties
+and
+CALICO_HOME/Server/plugins/calico.server.analysis/conf/calico.analysis.properties
 
-and provide values for variables
+Provide values for the following variables
 
-#The path to the prism binary file
-PRISM_EXECUTABLE=/usr/local/prism/bin/prism
+	#The path to the prism binary file
+	PRISM_EXECUTABLE=/usr/local/prism/bin/prism
 
-#Directories where you downloaded calico client and server
-CALICO_CLIENT_HOME=/home/motta/workspace/irvine/Calico-Analysis/Client
-CALICO_SERVER_HOME=/home/motta/workspace/irvine/Calico-Analysis/Server
-
+	#Directories where you downloaded calico client and server
+	CALICO_CLIENT_HOME=/home/motta/workspace/irvine/Calico-Analysis/Client
+	CALICO_SERVER_HOME=/home/motta/workspace/irvine/Calico-Analysis/Server
+	
 
 === Compile Calico-Analysis ===
 To build the core client and the analysis plugin client 
@@ -63,8 +65,6 @@ First run the server
 	ant run
 	
 Afterwards the client
-
-First run the server
 
 	cd CALICO_HOME/Client/core
 	ant run
