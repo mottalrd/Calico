@@ -121,11 +121,6 @@ public class ProbabilityTag extends AbstractTag implements ConnectorTag{
 		}
 	}
 
-	public static void updateProbability(ProbabilityTag tag) {
-		CGroup group=CConnectorController.connectors.get(tag.guuid).getIncomingGroup();
-		
-	}
-
 	public void increaseProbability() {
 		//TODO[mottalrd][bug] what happens if I have more than 2 outgoing connectors?
 		//If I have two connectors and I add another one, reset the probabilities

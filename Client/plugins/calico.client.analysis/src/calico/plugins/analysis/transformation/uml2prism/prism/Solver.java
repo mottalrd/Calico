@@ -16,6 +16,9 @@ import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Model;
 
+import calico.CalicoOptions;
+import calico.plugins.analysis.AnalysisConfiguration;
+
 /** 
  * This class is in charge of invoking prism and collect the 
  * results from the verification
@@ -24,11 +27,11 @@ import org.eclipse.uml2.uml.Model;
  */
 public class Solver {
 	
-	public String MODEL_FILE="out_prism_model.sm";
-	public String PROPERTY_FILE="out_prism_properties.props";
-	public String RESULT_FILE="out_prism_results.txt";
-	public String PRISM_EXECUTABLE="/usr/local/prism/bin/prism";
-	
+	public String MODEL_FOLDER=System.getProperty("java.io.tmpdir")+System.getProperty("file.separator")+"calico_prism_model";
+	public String MODEL_FILE=MODEL_FOLDER+System.getProperty("file.separator")+"out_prism_model.sm";
+	public String PROPERTY_FILE=MODEL_FOLDER+System.getProperty("file.separator")+"out_prism_properties.props";
+	public String RESULT_FILE=MODEL_FOLDER+System.getProperty("file.separator")+"out_prism_results.txt";
+	public String PRISM_EXECUTABLE=AnalysisConfiguration.PRISM_EXECUTABLE;
 	ArrayList<Result> prism_results=new ArrayList<Result>();
 	
 	//the one that I actually use
@@ -45,6 +48,11 @@ public class Solver {
 	 * @param prism_properties
 	 */
 	public void solve(ByteArrayOutputStream prism_model, Map<ActivityNode, String> prism_properties){
+		//Check if the temp folder exists, make it otherwise
+		if (!(new File(MODEL_FOLDER)).exists()){
+			(new File(MODEL_FOLDER)).mkdir();
+		}
+		
 		writeToOutputFile(MODEL_FILE, prism_model);
 		writeToOutputFile(PROPERTY_FILE, convertPropertyMapToStream(prism_properties));
 	

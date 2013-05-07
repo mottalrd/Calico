@@ -6,7 +6,6 @@ import java.awt.geom.Ellipse2D;
 import org.apache.log4j.Logger;
 
 import calico.CalicoOptions;
-import calico.CalicoUtils;
 import calico.components.CConnector;
 import calico.components.CGroup;
 import calico.components.menus.CanvasStatusBar;
@@ -15,7 +14,6 @@ import calico.controllers.CConnectorController;
 import calico.controllers.CGroupController;
 import calico.events.CalicoEventHandler;
 import calico.events.CalicoEventListener;
-import calico.inputhandlers.CalicoInputManager;
 import calico.networking.Networking;
 import calico.networking.PacketHandler;
 import calico.networking.netstuff.CalicoPacket;
@@ -31,8 +29,6 @@ import calico.plugins.analysis.components.buttons.RAMTagButton;
 import calico.plugins.analysis.components.buttons.RunTagButton;
 import calico.plugins.analysis.controllers.ADAnalysisController;
 import calico.plugins.analysis.controllers.ADMenuController;
-import calico.plugins.analysis.inputhandlers.AnalysisGroupInputHandler;
-import calico.plugins.analysis.utils.ActivityShape;
 import calico.utils.Geometry;
 
 /*
@@ -49,6 +45,8 @@ public class AnalysisPlugin extends CalicoPlugin implements CalicoEventListener 
 		super();
 		PluginInfo.name = "Analysis";
 		calico.plugins.analysis.iconsets.CalicoIconManager.setIconTheme(this.getClass(), CalicoOptions.core.icontheme);
+		//Load the configuration file
+		AnalysisConfiguration.load();
 	}
 
 	/*************************************************
