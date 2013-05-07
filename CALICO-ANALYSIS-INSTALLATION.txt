@@ -1,0 +1,70 @@
+#==============================
+# INSTALLATION INSTRUCTIONS
+#==============================
+
+1) Install PRISM
+2) Checkout Calico-Analysis
+3) Configuration
+4) Compile Calico-Analysis
+4) Run!
+
+=== Install PRISM ===
+Download the version of Prism for you operating system.
+http://www.prismmodelchecker.org/download.php
+
+
+=== Checkout Calico-Analysis ===
+Download the Calico Analysis distribution from 
+https://github.com/mottalrd/Calico/tree/calico-analysis
+
+In the following CALICO_HOME will be the root folder where
+you downloaded both the Client and the Server code
+This is what you should see in your directory.
+
+CALICO_HOME
+--- Client
+	--- core
+	--- plugins
+--- Server
+	--- core
+	--- plugins
+	
+
+=== Configuration ===
+Open the following file
+CALICO_HOME/Client/plugins/calico.client.analysis/conf/calico.analysis.properties
+
+and provide values for variables
+
+#The path to the prism binary file
+PRISM_EXECUTABLE=/usr/local/prism/bin/prism
+
+#Directories where you downloaded calico client and server
+CALICO_CLIENT_HOME=/home/motta/workspace/irvine/Calico-Analysis/Client
+CALICO_SERVER_HOME=/home/motta/workspace/irvine/Calico-Analysis/Server
+
+
+=== Compile Calico-Analysis ===
+To build the core client and the analysis plugin client 
+
+	cd CALICO_HOME/Client/plugins/calico.client.analysis
+	./build.sh
+	
+To build the core server and the analysis plugin server 
+
+	cd CALICO_HOME/Server/plugins/calico.server.analysis
+	./build.sh
+	
+
+=== Run! ===
+First run the server
+
+	cd CALICO_HOME/Server/core
+	ant run
+	
+Afterwards the client
+
+First run the server
+
+	cd CALICO_HOME/Client/core
+	ant run
